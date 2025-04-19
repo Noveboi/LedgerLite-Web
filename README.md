@@ -1,3 +1,2 @@
-Simple
-accounting
-software
+# LedgerLite - Website
+Simple accounting software
