@@ -1,2 +1,3 @@
 # LedgerLite - Website
-Simple accounting software
+
+Angular 19 website
