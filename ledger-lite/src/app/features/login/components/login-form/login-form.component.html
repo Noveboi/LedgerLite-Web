@@ -1,11 +1,21 @@
-<form id="login">
+
+<form id="login" (submit)="onFormSubmit($event)" [formGroup]="loginForm">
+    @let email = loginForm.controls.email;
+    @let pass = loginForm.controls.password;
+
     <mat-form-field>
         <mat-label>Email</mat-label>
-        <input type="text" matInput>
+        <input type="text" matInput formControlName="email">
+        @if (email.invalid || email.dirty) {
+            <mat-error>{{emailValidation()}}</mat-error>
+        }
     </mat-form-field>
     <mat-form-field>
         <mat-label>Password</mat-label>
-        <input type="password" matInput>
+        <input type="password" matInput formControlName="password">
+        @if (pass.invalid) {
+            <mat-error>{{passwordValidation()}}</mat-error>
+        }
     </mat-form-field>
 
     <button type="submit" mat-raised-button>Sign In</button>
