@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment as env } from '../../../environments/environment' ; 
 import { LoginRequest, LoginResponse } from '../../features/login/types';
+import { RegisterRequest } from '../../features/register/register.types';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../../types/users.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -50,8 +51,8 @@ export class AuthService {
   }
 
   private getError(err: any) {
-    if (err instanceof Error) {
-      return err.message
+    if (err.errors) {
+      return err.errors.join(', ')
     } else {
       return 'Registration is invalid.'
     }
