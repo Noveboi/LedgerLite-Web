@@ -1,4 +1,4 @@
-.login-page {
+#layout-anonymous {
     height: 100dvh;
     display: flex;
     flex-direction: column;
@@ -6,8 +6,4 @@
     justify-content: center;
 
     gap: 1rem;
-}
-
-p {
-    margin-top: 2em;
 }
