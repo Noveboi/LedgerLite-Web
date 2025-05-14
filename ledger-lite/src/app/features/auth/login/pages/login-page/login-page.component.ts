@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { LoginFormComponent } from "../../components/login-form/login-form.component";
-import { AuthService } from '../../../../core/services/auth-service';
-import { LoginRequest } from '../../types';
+import { AuthService } from '../../../../../core/services/auth-service';
+import { LoginRequest } from '../../login.types';
 import { RouterLink } from '@angular/router';
 
 @Component({

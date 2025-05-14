@@ -1,4 +1,4 @@
-import { User } from "../../types/users.types"
+import { User } from "../../../types/users.types"
 
 export type LoginRequest = { 
     email: string,
@@ -8,6 +8,5 @@ export type LoginRequest = {
 export type LoginResponse = {
     accessToken: string
     refreshToken: string
-    user: User,
     expiresIn: number
 }
