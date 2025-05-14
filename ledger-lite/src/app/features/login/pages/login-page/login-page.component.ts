@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { LoginFormComponent } from "../../components/login-form/login-form.component";
 import { AuthService } from '../../../../core/services/auth-service';
 import { LoginRequest } from '../../types';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
-  imports: [LoginFormComponent],
+  imports: [LoginFormComponent, RouterLink],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })

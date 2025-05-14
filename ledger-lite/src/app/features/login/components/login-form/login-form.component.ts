@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 })
 export class LoginFormComponent {
   loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
 
@@ -32,9 +32,9 @@ export class LoginFormComponent {
   private setValidationErrors() {
     const controls = this.loginForm.controls;
 
-    if (controls.email.hasError('email')) {
+    if (controls.username.hasError('email')) {
       this.emailValidation.set('Email is not a valid address')
-    } else if (controls.email.hasError('required')) {
+    } else if (controls.username.hasError('required')) {
       this.emailValidation.set('You must enter a value')
     } 
 
@@ -53,13 +53,8 @@ export class LoginFormComponent {
     const credentials = this.loginForm.value;
 
     this.onSubmit.emit({
-      email: credentials.email ?? '',
+      email: credentials.username ?? '',
       password: credentials.password ?? ''
     })
   }
-}
-
-type LoginValidationErrors = { 
-  email?: string,
-  password?: string
 }
