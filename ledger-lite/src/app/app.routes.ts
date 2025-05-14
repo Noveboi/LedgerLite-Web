@@ -1,11 +1,23 @@
 import { Routes } from '@angular/router';
-import { LoginPageComponent } from './features/login/pages/login-page/login-page.component';
-import { RegisterPageComponent } from './features/register/pages/register-page/register-page.component';
 import { AnonymousLayoutComponent } from './layout/anonymous-layout/anonymous-layout.component';
+import { isAuthenticatedGuard } from './core/guards/auth.guard';
+import { HomeLayoutComponent } from './layout/home-layout/home-layout.component';
 
 export const routes: Routes = [
-    { path: 'auth', component: AnonymousLayoutComponent, children: [
-        { path: 'login', component: LoginPageComponent },
-        { path: 'register', component: RegisterPageComponent }
-    ]}
+    { 
+        path: 'auth', 
+        component: AnonymousLayoutComponent, 
+        loadChildren: () => import('./features/auth/auth.routes').then((x) => x.AUTH_ROUTES) 
+    },
+    {
+        path: 'home',
+        canActivate: [isAuthenticatedGuard()],
+        component: HomeLayoutComponent,
+        loadChildren: () => import('./features/home/home.routes').then((x) => x.HOME_ROUTES)
+    },
+    {
+        path: '',
+        redirectTo: 'auth',
+        pathMatch: 'full'
+    }
 ];
