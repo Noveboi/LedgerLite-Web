@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LogoComponent } from "../../components/logo/logo.component";
 
@@ -6,7 +6,8 @@ import { LogoComponent } from "../../components/logo/logo.component";
   selector: 'app-anonymous-layout',
   imports: [RouterOutlet, LogoComponent],
   templateUrl: './anonymous-layout.component.html',
-  styleUrl: './anonymous-layout.component.css'
+  styleUrl: './anonymous-layout.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AnonymousLayoutComponent {
 
