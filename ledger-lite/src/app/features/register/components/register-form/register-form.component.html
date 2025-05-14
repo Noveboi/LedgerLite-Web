@@ -1,10 +1,49 @@
-<form [formGroup]="registerForm">
-    <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input type="text" matInput formControlName="email">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password">
-    </mat-form-field>
-</form>
+<div class="register-container">
+    @switch (status()) {
+        @case (registerStates.SubmittingRequiredCredentials) {
+            <form name="register-required" [formGroup]="registerForm">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input type="text" matInput formControlName="email">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput formControlName="password">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Confirm Password</mat-label>
+                    <input type="password" matInput formControlName="confirmPassword">
+                </mat-form-field>
+                
+                @if (registerForm.valid) {
+                    <button type="button" mat-raised-button (click)="nextState()">Next</button>
+                }
+            </form>
+        }
+        @case (registerStates.SubmittingAdditionalInformation) {
+            <form name="register-additional" [formGroup]="registerForm" (submit)="invokeRegister($event)">
+                <mat-form-field>
+                    <mat-label>Username</mat-label>
+                    <input type="text" matInput formControlName="username">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input type="text" matInput formControlName="firstName">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input type="text" matInput formControlName="lastName">
+                </mat-form-field>
+
+                <div class="btn-group">
+                    <button type="button" mat-stroked-button (click)="previousState()">Back</button>
+                    <button type="submit" mat-raised-button>Register</button>
+                </div>
+            </form>
+        }
+    }
+    
+    <a routerLink="/auth/login">Login</a>
+</div>
+
+

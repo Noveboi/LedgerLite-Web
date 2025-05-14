@@ -1,11 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { RegisterFormComponent } from "../../components/register-form/register-form.component";
+import { RegisterRequest } from '../../register.types';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth-service';
 
 @Component({
   selector: 'app-register-page',
-  imports: [],
+  imports: [RegisterFormComponent, RouterLink],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.css'
 })
 export class RegisterPageComponent {
-
+  private auth = inject(AuthService);
+  
+  error = computed(() => this.auth.errors().register);
+  
+  register(request: RegisterRequest) {
+    this.auth.register(request);
+  }
 }
