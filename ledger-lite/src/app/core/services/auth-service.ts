@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment as env } from '../../../environments/environment' ; 
-import { LoginRequest, LoginResponse } from '../../features/login/types';
-import { RegisterRequest } from '../../features/register/register.types';
-import { BehaviorSubject } from 'rxjs';
+import { LoginRequest, LoginResponse } from '../../features/auth/login/login.types';
+import { RegisterRequest } from '../../features/auth/register/register.types';
+import { BehaviorSubject, find } from 'rxjs';
 import { User } from '../../types/users.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -18,14 +18,42 @@ export class AuthService {
   private auth$ = new BehaviorSubject<AuthState>(initialState);
   private authState = signal<AuthState>(initialState);
 
+  accessToken = computed(() => this.authState().accessToken);
   user = computed(() => this.authState().user);
   errors = computed(() => this.authState().errors);
 
   constructor() {
     // Update the signal every time the subject changes
-    this.auth$.pipe(takeUntilDestroyed()).subscribe((u) => {
-      this.authState.update(_ => ({...u}));
+    this.auth$.pipe(takeUntilDestroyed()).subscribe(state => {
+      this.authState.update(_ => ({...state}));
     });
+
+    // Get the user when login is successful
+    this.auth$.pipe(takeUntilDestroyed())
+      .pipe(
+        find(state => state.accessToken !== null && !state.user)
+      )
+      .subscribe(() => this.getUserAndGoToHome())
+  }
+
+  private getUserAndGoToHome(): void {
+    if (this.authState().accessToken === null) {
+      throw new Error('Cannot get user without an access token.')
+    }
+
+    const auth = this.auth$.value;
+
+    this.http.get<User>(`${env.apiUrl}/me`).subscribe({
+      next: (resp) => {
+        this.auth$.next({
+          ...auth,
+          user: resp
+        });
+
+        this.router.navigate(['home'])
+      },
+      error: (err) => console.log(err)
+    })
   }
 
   login(request: LoginRequest): void {
@@ -34,7 +62,7 @@ export class AuthService {
     this.http.post<LoginResponse>(`${env.apiUrl}/login`, request).subscribe({
       next: (resp) => this.auth$.next({
         ...auth, 
-        user: resp.user,
+        errors: noErrors,
         accessToken: resp.accessToken,
         refreshToken: resp.refreshToken}),
       error: () => this.auth$.next({...auth, errors: {...auth.errors, login: 'Wrong username or password.'}})
@@ -70,13 +98,11 @@ interface AuthState {
   refreshToken: string | null,
   errors: AuthErrors
 }
+const noErrors: AuthErrors = {login: null, register: null}
 
 const initialState: AuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  errors: {
-    login: null,
-    register: null
-  }
+  errors: noErrors
 } 
