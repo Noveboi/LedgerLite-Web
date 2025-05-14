@@ -1,17 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { LoginFormComponent } from "../../components/login-form/login-form.component";
-import { LogoComponent } from "../../../../components/logo/logo.component";
 import { AuthService } from '../../../../core/services/auth-service';
 import { LoginRequest } from '../../types';
 
 @Component({
   selector: 'app-login-page',
-  imports: [LoginFormComponent, LogoComponent],
+  imports: [LoginFormComponent],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
   private auth = inject(AuthService)
+
+  errors = this.auth.errors
 
   handleLogin(request: LoginRequest) {
     this.auth.login(request)

@@ -1,3 +1,8 @@
 <app-login-form (onSubmit)="handleLogin($event)"/>
 
+@let loginError = errors().login;
+@if (loginError !== null) {
+    <p>{{loginError}}</p>
+}
+
 <p>New here? <a href="/auth/register">Create</a> an account</p>
