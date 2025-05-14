@@ -1,1 +1,10 @@
-<p>register-form works!</p>
+<form [formGroup]="registerForm">
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input type="text" matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password">
+    </mat-form-field>
+</form>
