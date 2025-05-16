@@ -1,19 +1,25 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginRequest } from '../../login.types';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { AuthService } from '../../../../../core/services/auth-service';
+import { MatIconModule } from '@angular/material/icon';
+import { ButtonComponent } from "../../../../../core/components/button/button.component";
 
 @Component({
   selector: 'app-login-form',
-  imports: [MatFormField, MatInputModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatFormField, MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatIconModule, ButtonComponent],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
+  private auth = inject(AuthService);
+
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
@@ -22,6 +28,7 @@ export class LoginFormComponent {
   emailValidation = signal('')
   passwordValidation = signal('')
   onSubmit = output<LoginRequest>()
+  isLoading = this.auth.isLoading;
 
   constructor() {
     merge(this.loginForm.statusChanges, this.loginForm.valueChanges)

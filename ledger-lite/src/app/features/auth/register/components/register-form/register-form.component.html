@@ -15,9 +15,7 @@
                     <input type="password" matInput formControlName="confirmPassword">
                 </mat-form-field>
                 
-                @if (registerForm.valid) {
-                    <button type="button" mat-raised-button (click)="nextState()">Next</button>
-                }
+                <button type="button" mat-raised-button (click)="nextState()" [disabled]="registerForm.invalid">Next</button>
             </form>
         }
         @case (registerStates.SubmittingAdditionalInformation) {

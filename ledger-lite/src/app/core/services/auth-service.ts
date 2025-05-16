@@ -18,6 +18,7 @@ export class AuthService {
   private auth$ = new BehaviorSubject<AuthState>(initialState);
   private authState = signal<AuthState>(initialState);
 
+  isLoading = signal(false);
   accessToken = computed(() => this.authState().accessToken);
   user = computed(() => this.authState().user);
   errors = computed(() => this.authState().errors);
@@ -26,6 +27,7 @@ export class AuthService {
     // Update the signal every time the subject changes
     this.auth$.pipe(takeUntilDestroyed()).subscribe(state => {
       this.authState.update(_ => ({...state}));
+      this.isLoading.set(false);
     });
 
     // Get the user when login is successful
@@ -58,6 +60,7 @@ export class AuthService {
 
   login(request: LoginRequest): void {
     const auth = this.auth$.value;
+    this.isLoading.set(true);
 
     this.http.post<LoginResponse>(`${env.apiUrl}/login`, request).subscribe({
       next: (resp) => this.auth$.next({
@@ -71,6 +74,7 @@ export class AuthService {
 
   register(request: RegisterRequest): void {
     const auth = this.auth$.value;
+    this.isLoading.set(true);
 
     this.http.post(`${env.apiUrl}/register`, request).subscribe({
       next: () => this.router.navigate(['auth', 'login']),
