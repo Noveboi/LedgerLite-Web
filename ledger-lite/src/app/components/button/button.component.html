@@ -1,0 +1,6 @@
+<button [type]="type()" mat-raised-button>
+    @if (isLoading()) {
+        <mat-icon><mat-spinner diameter="20"/></mat-icon>
+    }
+    <ng-content></ng-content>
+</button>
