@@ -1,0 +1,5 @@
+mat-tree-node:hover {
+    user-select: none;
+    background-color: var(--mat-sys-secondary);
+    color: var(--mat-sys-on-secondary);
+}
