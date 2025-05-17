@@ -1,9 +1,15 @@
 .nav-content {
-  position: absolute;
-  min-height: 100dvh;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #eee;
+    min-height: 100dvh;
+}
+
+.home-container {
+    min-height: 100dvh;
+}
+
+.main-content {
+    padding: 1em;
+}
+
+.ll-toolbar {
+    border-bottom: 2px solid var(--mat-sys-primary);
 }
