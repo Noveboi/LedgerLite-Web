@@ -1,15 +1,3 @@
-html, body { height: 100%; }
-body {
-    background: rgb(40, 40, 40); 
-    margin: 0; 
-    font-family: Roboto, "Helvetica Neue", sans-serif; 
-    color: var(--mat-sys-on-background);
-}
-
-a {
-    color: var(--mat-sys-primary);
-}
-
 .btn-group {
     display: flex;
     gap: 1em;
