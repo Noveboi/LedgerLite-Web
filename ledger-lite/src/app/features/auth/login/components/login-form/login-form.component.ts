@@ -9,7 +9,7 @@ import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { AuthService } from '../../../../../core/services/auth-service';
 import { MatIconModule } from '@angular/material/icon';
-import { ButtonComponent } from "../../../../../core/components/button/button.component";
+import { ButtonComponent } from "../../../../../components/button/button.component";
 
 @Component({
   selector: 'app-login-form',
