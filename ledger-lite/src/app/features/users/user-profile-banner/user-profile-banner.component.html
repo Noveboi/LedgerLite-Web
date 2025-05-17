@@ -1,0 +1,15 @@
+<div class="user-info">
+    <div class="user-name">
+        <mat-icon>person</mat-icon> 
+        {{user()?.username}}
+    </div>
+    <div class="user-org">
+        <mat-icon>groups</mat-icon>
+        {{user()?.organization?.name}}
+    </div>
+</div>
+<div class="user-actions">
+    <app-button title="Sign Out" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+    </app-button>
+</div>

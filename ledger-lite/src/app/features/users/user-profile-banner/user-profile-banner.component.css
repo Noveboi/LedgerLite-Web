@@ -1,0 +1,18 @@
+:host {
+    padding: .75em;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+    font-size: 1em;
+    margin-bottom: 1rem;
+}
+
+.user-info > * {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
