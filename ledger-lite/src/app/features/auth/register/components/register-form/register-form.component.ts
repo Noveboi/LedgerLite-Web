@@ -1,18 +1,22 @@
-import { Component, computed, output, signal } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RegisterRequest } from '../../register.types';
 import { RouterLink } from '@angular/router';
+import { ButtonComponent } from "../../../../../core/components/button/button.component";
+import { AuthService } from '../../../../../core/services/auth-service';
 
 @Component({
   selector: 'app-register-form',
-  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule, RouterLink],
+  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule, RouterLink, ButtonComponent],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
+  private auth = inject(AuthService);
+
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -29,7 +33,8 @@ export class RegisterFormComponent {
 
   registerStates = RegisterStatus;
   status = signal(RegisterStatus.SubmittingRequiredCredentials);
-  register = output<RegisterRequest>()
+  register = output<RegisterRequest>();
+  isLoading = this.auth.isLoading;
 
   nextState() {
     if (this.status() >= 1) 

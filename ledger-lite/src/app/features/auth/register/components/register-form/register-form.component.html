@@ -35,7 +35,7 @@
 
                 <div class="btn-group">
                     <button type="button" mat-stroked-button (click)="previousState()">Back</button>
-                    <button type="submit" mat-raised-button>Register</button>
+                    <app-button type="submit" [isLoading]="isLoading()">Register</app-button>
                 </div>
             </form>
         }
