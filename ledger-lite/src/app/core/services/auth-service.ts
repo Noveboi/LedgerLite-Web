@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment as env } from '../../../environments/environment' ; 
 import { LoginRequest, LoginResponse } from '../../features/auth/login/login.types';
 import { RegisterRequest } from '../../features/auth/register/register.types';
-import { BehaviorSubject, find } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { User } from '../../types/users.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -29,20 +29,12 @@ export class AuthService {
       this.authState.update(_ => ({...state}));
       this.isLoading.set(false);
     });
-
-    // Get the user when login is successful
-    this.auth$.pipe(takeUntilDestroyed())
-      .pipe(
-        find(state => state.accessToken !== null && !state.user)
-      )
-      .subscribe(() => this.getUserAndGoToHome())
   }
 
-  private getUserAndGoToHome(): void {
+  private getUserAndHome(): void {
     if (this.authState().accessToken === null) {
       throw new Error('Cannot get user without an access token.')
     }
-
     const auth = this.auth$.value;
 
     this.http.get<User>(`${env.apiUrl}/me`).subscribe({
@@ -52,7 +44,7 @@ export class AuthService {
           user: resp
         });
 
-        this.router.navigate(['home'])
+        this.router.navigate(['home']);
       },
       error: (err) => console.log(err)
     })
@@ -63,11 +55,17 @@ export class AuthService {
     this.isLoading.set(true);
 
     this.http.post<LoginResponse>(`${env.apiUrl}/login`, request).subscribe({
-      next: (resp) => this.auth$.next({
-        ...auth, 
-        errors: noErrors,
-        accessToken: resp.accessToken,
-        refreshToken: resp.refreshToken}),
+      next: (resp) => {
+        this.auth$.next({
+          ...auth,
+          errors: noErrors,
+          accessToken: resp.accessToken,
+          refreshToken: resp.refreshToken
+        });
+
+        console.log('Calling getUser');
+        this.getUserAndHome();
+      },
       error: () => this.auth$.next({...auth, errors: {...auth.errors, login: 'Wrong username or password.'}})
     })
   }
@@ -80,6 +78,11 @@ export class AuthService {
       next: () => this.router.navigate(['auth', 'login']),
       error: (err) => this.auth$.next({...auth, errors: {...auth.errors, register: this.getError(err)}})
     })
+  }
+
+  logout(): void {
+    this.auth$.next(initialState);
+    this.router.navigate([''])
   }
 
   private getError(err: any) {
