@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SettingsService } from './core/services/storage/settings.service';
+import { SystemTheme } from './core/types/config.types';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +10,8 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'ledger-lite';
+  private settingsService = inject(SettingsService);
+  private settings = this.settingsService.current;
+
+  appClass = computed(() => `ll-app ${this.settings().systemTheme === SystemTheme.Dark ? 'dark' : ''}`)
 }
