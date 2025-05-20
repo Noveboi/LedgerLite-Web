@@ -1,12 +1,15 @@
 <div class="user-info">
+    @let usr = user();
     <div class="user-name">
         <mat-icon>person</mat-icon> 
-        {{user()?.username}}
+        {{usr?.username ?? 'Unknown'}}
     </div>
-    <div class="user-org">
-        <mat-icon>groups</mat-icon>
-        {{user()?.organization?.name}}
-    </div>
+    @if (usr?.organization != null) {
+        <div class="user-org">
+            <mat-icon>groups</mat-icon>
+            {{usr?.organization?.name ?? 'None'}}
+        </div>
+    }
 </div>
 <div class="user-actions">
     <app-button title="Sign Out" (click)="logout()">
