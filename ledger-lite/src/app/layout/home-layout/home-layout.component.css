@@ -1,31 +1,5 @@
-.nav-content {
-    flex: 1;
-}
-
 .home-container {
     height: 100dvh;
     display: flex;
     flex-direction: column;
-}
-
-.main-content {
-    padding: 1em;
-}
-
-.ll-toolbar {
-    border-bottom: 2px solid var(--mat-sys-primary);
-    gap: .25em;
-}
-
-.ll-toolbar app-logo {
-    margin-left: .5em;
-}
-
-.ll-sidenav ::ng-deep .mat-drawer-inner-container {
-    display: flex; 
-    flex-direction: column;
-}
-
-.snav-tree {
-    flex: 1;
 }

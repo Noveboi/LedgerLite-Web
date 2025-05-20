@@ -1,23 +1,12 @@
 <div class="home-container">
-  <mat-toolbar class="ll-toolbar">
-        <button (click)="sidenav.toggle()" mat-icon-button>
-          <mat-icon>menu</mat-icon>
-        </button>
-        <button (click)="toggleTheme()" mat-icon-button>
-          <mat-icon>colorize</mat-icon>
-        </button>
-        <app-logo></app-logo>
-  </mat-toolbar>
-
-  <mat-sidenav-container class="nav-content">
-    <mat-sidenav #sidenav mode="side" opened class="ll-sidenav">
-      <app-account-tree class="snav-tree"/>
-      <app-user-profile-banner/>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <div class="main-content">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    @let usr = user();
+    @if (!usr) {
+        <h1> Unauthorized. </h1>
+    } @else {
+        @if (!usr.organization) {
+            <app-no-organization/>
+        } @else {
+            <app-normal-home-layout/>
+        }
+    }
 </div>
