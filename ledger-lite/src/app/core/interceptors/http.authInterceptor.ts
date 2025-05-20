@@ -9,7 +9,6 @@ export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): 
     if (token === null)
         return next(req);
 
-    console.log('Sending authenticated request')
     const authReq = req.clone({
         headers: req.headers.append('Authorization', `Bearer ${token}`)
     })

@@ -44,7 +44,7 @@ export class AuthService {
           user: resp
         });
 
-        this.router.navigate(['home']);
+        this.router.navigate(['']);
       },
       error: (err) => console.log(err)
     })
@@ -63,7 +63,6 @@ export class AuthService {
           refreshToken: resp.refreshToken
         });
 
-        console.log('Calling getUser');
         this.getUserAndHome();
       },
       error: () => this.auth$.next({...auth, errors: {...auth.errors, login: 'Wrong username or password.'}})
