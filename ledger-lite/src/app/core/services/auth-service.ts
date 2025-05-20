@@ -20,7 +20,6 @@ export class AuthService {
   isLoading = signal(false);
   accessToken = computed(() => this.authState().accessToken);
   user = computed(() => this.authState().user);
-  errors = computed(() => this.authState().errors);
 
   constructor() {
     // Update the signal every time the subject changes
@@ -52,16 +51,12 @@ export class AuthService {
       throw new Error('Cannot get user without an access token.')
     }
     const auth = this.auth$.value;
-    this.api.get<User>('/me').subscribe({
-      next: (resp) => {
-        this.auth$.next({
-          ...auth,
-          user: resp
-        });
-
-        this.router.navigate(['']);
-      },
-      error: (err) => console.log(err)
+    this.api.get<User>('/me').subscribe((resp) => {
+      this.auth$.next({
+        ...auth,
+        user: resp
+      });
+      this.router.navigate(['']);
     })
   }
 
@@ -69,20 +64,14 @@ export class AuthService {
     const auth = this.auth$.value;
     this.isLoading.set(true);
 
-    this.api.post<LoginResponse>('/login', request).subscribe({
-      next: (resp) => {
-        this.auth$.next({
-          ...auth,
-          accessToken: resp.accessToken,
-          refreshToken: resp.refreshToken
-        });
+    this.api.post<LoginResponse>('/login', request).subscribe((resp) => {
+      this.auth$.next({
+        ...auth,
+        accessToken: resp.accessToken,
+        refreshToken: resp.refreshToken
+      });
 
-        this.getUserAndHome();
-      },
-      error: () => this.auth$.next({...auth, errors: {
-        login: 'Wrong username or password.',
-        register: null
-      }})
+      this.getUserAndHome();
     })
   }
 
@@ -90,13 +79,7 @@ export class AuthService {
     const auth = this.auth$.value;
     this.isLoading.set(true);
 
-    this.api.post(`/register`, request).subscribe({
-      next: () => this.router.navigate(['auth', 'login']),
-      error: (err) => this.auth$.next({...auth, errors: {
-        register: this.getError(err),
-        login: null
-      }})
-    })
+    this.api.post(`/register`, request).subscribe(() => this.router.navigate(['auth', 'login']))
   }
 
   logout(): void {
@@ -113,23 +96,14 @@ export class AuthService {
   }
 }
 
-interface AuthErrors {
-  login: string | null,
-  register: string | null
-}
-
 interface AuthState {
   user: User | null,
   accessToken: string | null,
   refreshToken: string | null,
-  errors: AuthErrors
 }
-
-const noErrors: AuthErrors = {login: null, register: null}
 
 const initialState: AuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  errors: noErrors
 } 

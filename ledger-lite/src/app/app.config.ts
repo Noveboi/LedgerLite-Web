@@ -1,9 +1,10 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInteceptor } from './core/interceptors/http.authInterceptor';
+import { GlobalErrorHandlerService } from './core/services/errors/global-error-handler.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +13,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([authInteceptor])
-    )]
+    ),
+    {
+      provide: ErrorHandler, useClass: GlobalErrorHandlerService
+    }]
 };

@@ -12,8 +12,6 @@ import { AuthService } from '../../../../../core/services/auth-service';
 export class RegisterPageComponent {
   private auth = inject(AuthService);
   
-  error = computed(() => this.auth.errors().register);
-  
   register(request: RegisterRequest) {
     this.auth.register(request);
   }

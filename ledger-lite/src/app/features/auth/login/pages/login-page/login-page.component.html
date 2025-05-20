@@ -1,10 +1,5 @@
 <div class="login-container">
     <app-login-form (onSubmit)="handleLogin($event)"/>
 
-    @let loginError = errors().login;
-    @if (loginError !== null) {
-        <p>{{loginError}}</p>
-    }
-
     <a class="link" routerLink="/auth/register">Create an account</a>
 </div>

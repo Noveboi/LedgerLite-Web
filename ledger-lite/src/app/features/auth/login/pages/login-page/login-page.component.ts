@@ -13,8 +13,6 @@ import { RouterLink } from '@angular/router';
 export class LoginPageComponent {
   private auth = inject(AuthService)
 
-  errors = this.auth.errors
-
   handleLogin(request: LoginRequest) {
     this.auth.login(request)
   }
