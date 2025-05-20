@@ -1,7 +1,7 @@
-<form name="create-org" (submit)="handleCreateOrganization($event)">
+<form name="create-org" (submit)="handleCreateOrganization($event)" [formGroup]="group">
     <mat-form-field>
         <mat-label>Name</mat-label>
-        <input type="text" matInput>
+        <input type="text" matInput formControlName="name">
     </mat-form-field>
 
     <app-button type="submit">Create</app-button>

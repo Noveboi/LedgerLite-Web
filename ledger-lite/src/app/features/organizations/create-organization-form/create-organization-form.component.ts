@@ -1,17 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ButtonComponent } from "../../../components/button/button.component";
+import { FormControl, FormControlDirective, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { OrganizationService } from '../services/organization.service';
 
 @Component({
   selector: 'app-create-organization-form',
-  imports: [MatFormFieldModule, MatInputModule, ButtonComponent],
+  imports: [MatFormFieldModule, MatInputModule, ButtonComponent, ReactiveFormsModule],
   templateUrl: './create-organization-form.component.html',
   styleUrl: './create-organization-form.component.css'
 })
 export class CreateOrganizationFormComponent {
+  private organizations = inject(OrganizationService);
+
+  group = new FormGroup({
+    name: new FormControl('', Validators.required)
+  })
+
   handleCreateOrganization(e: SubmitEvent) {
     e.preventDefault()
-    console.log('ok!')
+    if (this.group.invalid){
+      return;
+    }
+
+    const value = this.group.value;
+    if (!value.name || value.name === '') {
+      return;
+    }
+
+    this.organizations.create({ name: value.name })
   }
 }
