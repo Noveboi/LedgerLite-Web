@@ -1,1 +1,10 @@
-<h1>Hello!</h1>
+@let usr = user();
+
+@if (usr?.organization) {
+    <h1>Hello!</h1>
+} @else {
+    <div class="no-org-actions">
+        <button type="button" mat-flat-button (click)="navigateToCreateOrganization()">Create Organization</button>
+        <button type="button" mat-flat-button>Join Organization</button>
+    </div>
+}
