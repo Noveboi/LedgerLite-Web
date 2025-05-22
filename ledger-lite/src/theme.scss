@@ -13,9 +13,21 @@ html {
 
 body {
     margin: 0;
+    &.dark {
+        color-scheme: dark;
+    }
+
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+    font-family: var(--mat-sys-display-medium-font);
 }
 
 form {
     display: flex;
     flex-direction: column;
+}
+
+.btn-group {
+    display: flex;
+    gap: 1em;
 }

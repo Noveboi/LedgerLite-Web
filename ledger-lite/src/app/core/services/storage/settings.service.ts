@@ -19,7 +19,9 @@ export class SettingsService {
     localStorage.setItem('settings', JSON.stringify(settings))
 
     if (settings.systemTheme === SystemTheme.Dark) {
-      document.body.classList.toggle('dark')
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
     }
   }
 
