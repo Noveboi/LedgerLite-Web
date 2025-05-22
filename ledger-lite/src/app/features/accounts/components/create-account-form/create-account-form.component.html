@@ -1,0 +1,29 @@
+<form name="create-account" [formGroup]="accountGroup" (submit)="createAccount()">
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input type="text" matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Number</mat-label>
+        <input type="text" matInput formControlName="number">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+            @for (type of accountTypes ; track type) {
+                <mat-option [value]="type">{{ type }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Currency</mat-label>
+        <mat-select formControlName="currency">
+            @for (kvp of currencies ; track kvp[1]) {
+                <mat-option [value]="kvp[1]"> {{ kvp[0] }} ({{kvp[1]}})</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-checkbox formControlName="isPlaceholder">Placeholder</mat-checkbox>
+
+    <app-button type="submit">Create</app-button>
+</form>
