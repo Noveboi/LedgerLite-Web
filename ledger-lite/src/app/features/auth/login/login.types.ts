@@ -1,4 +1,4 @@
-import { User } from "../../../types/users.types"
+import { User } from "../../users/users.types"
 
 export type LoginRequest = { 
     email: string,
