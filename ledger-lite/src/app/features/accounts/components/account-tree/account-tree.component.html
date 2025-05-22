@@ -2,18 +2,24 @@
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button mat-icon-button disabled></button>
         {{node.account.name}}
+        @if (node.account.isControl === true) {
+            <app-create-account-button [parent]="node.account"></app-create-account-button>
+        }
     </mat-tree-node>
     <mat-tree-node 
-    *matTreeNodeDef="let node; when: hasChild" 
-    matTreeNodePadding
-    matTreeNodeToggle
-    [cdkTreeNodeTypeaheadLabel]="node.account.name">
+        *matTreeNodeDef="let node;when: hasChild" 
+        matTreeNodePadding
+        matTreeNodeToggle
+        [cdkTreeNodeTypeaheadLabel]="node.account.name">
         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.account.name">
             <mat-icon class="mat=icon-rtl-mirror">
                 {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
         {{node.account.name}}
+        @if (node.account.isControl === true) {
+            <app-create-account-button [parent]="node.account"></app-create-account-button>
+        }
     </mat-tree-node>
 </mat-tree>
 

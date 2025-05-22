@@ -1,5 +1,5 @@
 import { ChartAccountNode, ChartOfAccounts, SlimAccount } from '../../accounts.types';
-import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input, TrackByFunction} from '@angular/core';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ export class AccountTreeComponent {
 
   childrenAccessor = (node: ChartAccountNode) => node.children ?? [];
   hasChild = (_: number, node: ChartAccountNode) => !!node.children && node.children.length > 0;
+  trackByFn: TrackByFunction<ChartAccountNode> = (_: number, item: ChartAccountNode) => item.account.id;
   
   dataSource = this.accountService.chart$.pipe(
     map(chart => chart.accounts)

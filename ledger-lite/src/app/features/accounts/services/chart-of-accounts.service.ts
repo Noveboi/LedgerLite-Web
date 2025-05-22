@@ -18,6 +18,12 @@ export class ChartOfAccountsService {
 
   chart = this.chartSignal.asReadonly();
   chart$ = toObservable(this.chartSignal);
+
+  constructor() {
+    if (this.chartSignal() === initialChart) {
+      this.getChartOfAccounts();
+    }
+  }
   
   getChartOfAccounts(): void {
     this.api.get<ChartOfAccounts>(`/accounts`)

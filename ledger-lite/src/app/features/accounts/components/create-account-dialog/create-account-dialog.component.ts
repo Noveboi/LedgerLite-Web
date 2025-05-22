@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CreateAccountFormComponent } from "../create-account-form/create-account-form.component";
+import { SlimAccount } from '../../accounts.types';
 
 @Component({
   selector: 'app-create-account-dialog',
@@ -10,5 +11,5 @@ import { CreateAccountFormComponent } from "../create-account-form/create-accoun
   styleUrl: './create-account-dialog.component.css'
 })
 export class CreateAccountDialogComponent {
-
+  parent: SlimAccount | undefined = inject(MAT_DIALOG_DATA);
 }

@@ -1,5 +1,4 @@
-export type Currency = 'EUR' | 'USD' | 'GBP'
-export const currencies = new Map<string, Currency>([
+export const currencies = new Map<string, string>([
     ['€', 'EUR'],
     ['$', 'USD'],
     ['£', 'GBP']

@@ -1,9 +1,15 @@
-.nav-content {
-    flex: 1;
+:host {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 .main-content {
     padding: 1em;
+}
+
+mat-sidenav-container {
+    flex: 1;
 }
 
 .ll-toolbar {
@@ -15,6 +21,9 @@
     margin-left: .5em;
 }
 
+.ll-sidenav {
+    flex: 1;
+}
 .ll-sidenav ::ng-deep .mat-drawer-inner-container {
     display: flex; 
     flex-direction: column;
