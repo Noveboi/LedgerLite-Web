@@ -1,6 +1,5 @@
-import { Injectable, OnDestroy, signal, Signal, WritableSignal } from '@angular/core';
-import { UserSettings } from '../../types/config.types';
-import { Observable } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { SystemTheme, UserSettings } from '../../types/config.types';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
@@ -18,6 +17,10 @@ export class SettingsService {
 
   private setUserSettings(settings: UserSettings): void {
     localStorage.setItem('settings', JSON.stringify(settings))
+
+    if (settings.systemTheme === SystemTheme.Dark) {
+      document.body.classList.toggle('dark')
+    }
   }
 
   private getUserSettings(): UserSettings {

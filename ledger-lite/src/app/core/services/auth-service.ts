@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { LoginRequest, LoginResponse } from '../../features/auth/login/login.types';
 import { RegisterRequest } from '../../features/auth/register/register.types';
 import { BehaviorSubject, map } from 'rxjs';
-import { User } from '../../types/users.types';
+import { User } from '../../features/users/users.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ApiService } from './api/api.service';
