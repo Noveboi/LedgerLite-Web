@@ -1,16 +1,34 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { ChartOfAccounts } from '../accounts.types';
-import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { inject, Injectable, signal } from '@angular/core';
+import { Account, ChartOfAccounts } from '../accounts.types';
+import { CreateAccountRequest } from '../accounts.requests';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { ApiService } from '../../../core/services/api/api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChartOfAccountsService {
-  private http = inject(HttpClient);
+  private api = inject(ApiService);
+  private snackbar = inject(MatSnackBar);
+
+  private chartSignal = signal<ChartOfAccounts>(initialChart);
+
+  chart = this.chartSignal.asReadonly();
+  chart$ = toObservable(this.chartSignal);
   
-  getChartOfAccounts(): Observable<ChartOfAccounts> {
-    return this.http.get<ChartOfAccounts>(`${environment.apiUrl}/accounts`);
+  getChartOfAccounts(): void {
+    this.api.get<ChartOfAccounts>(`/accounts`)
+      .subscribe(resp => this.chartSignal.set(resp));
+  }
+
+  createAccount(request: CreateAccountRequest): void {
+    this.api.post<Account>("/accounts", request)
+      .subscribe((resp) => {
+        this.snackbar.open(`Successfully created account ${resp.name}!`)
+        return this.getChartOfAccounts();
+      });
   }
 }
