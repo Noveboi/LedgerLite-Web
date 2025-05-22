@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, inject, Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { ApiError } from '../../../types/error.types';
+import { ApiError, ValidationError } from '../../../types/error.types';
+import { first } from 'rxjs';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
@@ -13,10 +14,25 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     if (error instanceof HttpErrorResponse) {
       if ('detail' in error.error) {
         this.showMessage(this.cleanDetail(error.error.detail))
+      } else if (Array.isArray(error.error))  {
+        const errors: any[] = error.error;
+        if (errors.length === 0)
+          return;
+
+        const firstError = errors[0];
+        if ('errorMessage' in firstError) {
+          this.showMessages((errors as ValidationError[]).map(err => err.errorMessage));
+        } else {
+          this.showMessage(error.message)
+        }
       } else {
         this.showMessage(error.message)
       }
     }
+  }
+
+  private showMessages(messages: readonly string[]) {
+    messages.forEach(message => this.showMessage(message));
   }
 
   private showMessage(message: string) {
