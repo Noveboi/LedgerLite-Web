@@ -5,6 +5,6 @@ export enum SystemTheme {
 
 export class UserSettings {
     systemTheme: SystemTheme = SystemTheme.Light;
-
-    
+    accessToken: string | null = null;
+    refreshToken: string | null = null;    
 };

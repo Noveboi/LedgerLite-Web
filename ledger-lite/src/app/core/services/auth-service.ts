@@ -6,6 +6,7 @@ import { User } from '../../features/users/users.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ApiService } from './api/api.service';
+import { SettingsService } from './storage/settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import { ApiService } from './api/api.service';
 export class AuthService {
   private api = inject(ApiService);
   private router = inject(Router);
+  private settings = inject(SettingsService);
 
   private auth$ = new BehaviorSubject<AuthState>(initialState);
   private authState = signal<AuthState>(initialState);
@@ -60,39 +62,52 @@ export class AuthService {
     })
   }
 
+  tryGetTokenFromSettings(): string | null {
+    const current = this.settings.current();
+    if (current.accessToken) {
+      this.refresh()
+      this.setStateTokens(current.accessToken, current.refreshToken)
+    }
+
+    return current.accessToken;
+  }
+
   login(request: LoginRequest): void {
-    const auth = this.auth$.value;
     this.isLoading.set(true);
 
     this.api.post<LoginResponse>('/login', request).subscribe((resp) => {
-      this.auth$.next({
-        ...auth,
+      this.setStateTokens(resp.accessToken, resp.refreshToken)
+      this.settings.current.update(s => ({
+        ...s,
         accessToken: resp.accessToken,
-        refreshToken: resp.refreshToken
-      });
+        refreshToken: resp.refreshToken 
+      }))
 
       this.getUserAndHome();
     })
   }
 
   register(request: RegisterRequest): void {
-    const auth = this.auth$.value;
     this.isLoading.set(true);
-
     this.api.post(`/register`, request).subscribe(() => this.router.navigate(['auth', 'login']))
   }
 
   logout(): void {
     this.auth$.next(initialState);
+    this.settings.current.update(s => ({
+        ...s,
+        accessToken: null,
+        refreshToken: null
+      }))
     this.router.navigate([''])
   }
 
-  private getError(err: any) {
-    if (err.errors) {
-      return err.errors.join(', ')
-    } else {
-      return 'Registration is invalid.'
-    }
+  private setStateTokens(access: string | null, refresh: string | null): void {
+    this.auth$.next({
+        ...this.auth$.value,
+        accessToken: access,
+        refreshToken: refresh
+      });
   }
 }
 

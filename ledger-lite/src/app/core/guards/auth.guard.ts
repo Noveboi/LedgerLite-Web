@@ -9,6 +9,12 @@ export const isAuthenticatedGuard = (): CanActivateFn => {
 
         if (auth.user()) {
             return true;
+        } 
+
+        const tokenFromStorage = auth.tryGetTokenFromSettings();
+        if (tokenFromStorage) {
+            auth.refresh()
+            return true;
         }
 
         return router.parseUrl('auth/login')
