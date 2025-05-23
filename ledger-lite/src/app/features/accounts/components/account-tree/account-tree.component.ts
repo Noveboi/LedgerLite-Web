@@ -7,10 +7,12 @@ import { ChartOfAccountsService } from '../../services/chart-of-accounts.service
 import { map } from 'rxjs';
 import { CreateAccountButtonComponent } from "../create-account-button/create-account-button.component";
 import { RouterLink } from '@angular/router';
+import { AccountButtonGroupComponent } from "../account-button-group/account-button-group.component";
+import { RemoveAccountButtonComponent } from "../remove-account-button/remove-account-button.component";
 
 @Component({
   selector: 'app-account-tree',
-  imports: [MatTreeModule, MatButtonModule, MatIconModule, CreateAccountButtonComponent, RouterLink, MatTreeNodePadding],
+  imports: [MatTreeModule, MatButtonModule, MatIconModule, CreateAccountButtonComponent, RouterLink, MatTreeNodePadding, AccountButtonGroupComponent],
   templateUrl: './account-tree.component.html',
   styleUrl: './account-tree.component.scss'
 })

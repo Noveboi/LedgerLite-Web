@@ -3,10 +3,9 @@
         <a [routerLink]="`/accounts/${node.account.id}`"></a>
         <button mat-icon-button disabled></button>
         {{node.account.name}}
-        @if (node.account.isControl === true) {
-            <app-create-account-button [parent]="node.account" class="create-child"></app-create-account-button>
-        }
+        <app-account-button-group [account]="node.account"/>
     </mat-tree-node>
+    
     <mat-tree-node 
         *matTreeNodeDef="let node;when: hasChild" 
         matTreeNodeToggle
@@ -19,9 +18,7 @@
             </mat-icon>
         </button>
         {{node.account.name}}
-        @if (node.account.isControl === true) {
-            <app-create-account-button [parent]="node.account" class="create-child"></app-create-account-button>
-        }
+        <app-account-button-group [account]="node.account"/>
     </mat-tree-node>
 </mat-tree>
 
