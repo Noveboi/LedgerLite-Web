@@ -1,9 +1,9 @@
 @if (parent()) {
-    <button mat-icon-button (click)="openCreateAccountDialog()"> 
+    <button mat-icon-button (click)="openCreateAccountDialog($event)"> 
         <mat-icon>add</mat-icon>
     </button>
 } @else {
-    <button mat-flat-button (click)="openCreateAccountDialog()"> 
+    <button mat-flat-button (click)="openCreateAccountDialog($event)"> 
         <mat-icon>add</mat-icon>
         Add Account
     </button>

@@ -15,10 +15,11 @@ export class CreateAccountButtonComponent {
   private dialog = inject(MatDialog)
   parent = input<SlimAccount>();
 
-  openCreateAccountDialog() {
+  openCreateAccountDialog(e: MouseEvent) {
+    e.stopPropagation();
     this.dialog.open(CreateAccountDialogComponent, {
       data: this.parent(),
       disableClose: true
-    })
+    });
   }
 }
