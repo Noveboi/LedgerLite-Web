@@ -19,6 +19,10 @@ export class ApiService {
     return this.http.post<TResponse>(this.getUrl(route), body);
   }
 
+  delete<TResponse>(route: string): Observable<TResponse> {
+    return this.http.delete<TResponse>(this.getUrl(route));
+  }
+
   private getUrl(route: string) {
     return route.startsWith('/') 
       ? `${this.prefix}${route}`
