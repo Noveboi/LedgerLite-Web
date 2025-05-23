@@ -13,7 +13,6 @@ const initialChart: ChartOfAccounts = {id: '', accounts: []}
 export class ChartOfAccountsService {
   private api = inject(ApiService);
   private snackbar = inject(MatSnackBar);
-
   private chartSignal = signal<ChartOfAccounts>(initialChart);
 
   chart = this.chartSignal.asReadonly();
@@ -26,15 +25,20 @@ export class ChartOfAccountsService {
   }
   
   getChartOfAccounts(): void {
-    this.api.get<ChartOfAccounts>(`/accounts`)
-      .subscribe(resp => this.chartSignal.set(resp));
+    this.api.get<ChartOfAccounts>(`/accounts`).subscribe(resp => this.chartSignal.set(resp));
   }
 
   createAccount(request: CreateAccountRequest): void {
-    this.api.post<Account>("/accounts", request)
-      .subscribe((resp) => {
-        this.snackbar.open(`Successfully created account ${resp.name}!`)
-        return this.getChartOfAccounts();
-      });
+    this.api.post<Account>("/accounts", request).subscribe((resp) => {
+      this.snackbar.open(`Successfully created account ${resp?.name ?? 'N/F'}!`)
+      this.getChartOfAccounts();
+    });
+  }
+
+  removeAccount(id: string): void {
+    this.api.delete<Account>(`/accounts/${id}`).subscribe((resp) => {
+      this.snackbar.open(`Removed account "${resp?.name ?? 'N/F'}"`)
+      this.getChartOfAccounts();
+    })
   }
 }
