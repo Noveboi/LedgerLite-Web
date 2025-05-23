@@ -20,4 +20,4 @@ export interface SlimAccount {
     isControl: boolean
 }
 
-export const accountTypes = ['Asset', 'Liability', 'Expense', 'Income', 'Equity']
+export const accountTypes = ['Asset', 'Liability', 'Expense', 'Revenue', 'Equity']
