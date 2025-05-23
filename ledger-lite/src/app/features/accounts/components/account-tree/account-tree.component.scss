@@ -11,8 +11,12 @@ mat-tree-node {
     &:hover {
         background-color: var(--mat-sys-secondary-container);
     }
+
+    .create-child {
+        margin-left: auto;
+    }
 }
 
-mat-tree-node .create-child {
-    margin-left: auto;
+.root-account-btn {
+    align-self: center;
 }

@@ -1,3 +1,10 @@
-<button mat-icon-button (click)="openCreateAccountDialog()"> 
-    <mat-icon>add</mat-icon>
-</button>
+@if (parent()) {
+    <button mat-icon-button (click)="openCreateAccountDialog()"> 
+        <mat-icon>add</mat-icon>
+    </button>
+} @else {
+    <button mat-flat-button (click)="openCreateAccountDialog()"> 
+        <mat-icon>add</mat-icon>
+        Add Account
+    </button>
+}
