@@ -1,0 +1,4 @@
+<app-remove-account-button [account]="account()"/>
+@if (account()?.isControl ?? false) {
+    <app-create-account-button [parent]="account()"/>
+}
