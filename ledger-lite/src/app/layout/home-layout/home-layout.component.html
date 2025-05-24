@@ -1,8 +1,5 @@
 <div class="home-container">
-    @let usr = user();
-    @if (!usr) {
-        <h1> Unauthorized. </h1>
-    } @else {
+    @if (user(); as usr) {
         @if (!usr.organization) {
             <app-no-organization/>
         } @else {

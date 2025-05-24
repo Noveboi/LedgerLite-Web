@@ -14,7 +14,7 @@ export class OrganizationService {
   create(request: CreateOrganizationRequest): void {
     this.api.post<CreateOrganizationResponse>('/organizations', request).subscribe({
       next: (resp) => {
-        this.auth.refresh()
+        this.auth.getUser()
       }
     });
   }
