@@ -13,7 +13,7 @@ export const isAuthenticatedGuard = (): CanActivateFn => {
 
         const tokenFromStorage = auth.tryGetTokenFromSettings();
         if (tokenFromStorage) {
-            auth.refresh()
+            auth.getUser()
             return true;
         }
 
