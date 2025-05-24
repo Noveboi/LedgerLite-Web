@@ -1,9 +1,10 @@
-import { Component, inject, Input, input, InputSignal } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
+import { JournalEntryTableComponent } from "../../../journal-entries/journal-entry-table/journal-entry-table.component";
 
 @Component({
   selector: 'app-account-page',
-  imports: [],
+  imports: [JournalEntryTableComponent],
   templateUrl: './account-page.component.html',
   styleUrl: './account-page.component.css'
 })
