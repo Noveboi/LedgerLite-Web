@@ -3,5 +3,5 @@
         <app-account-heading [account]="account"/>
     </div>
     
-    <app-journal-entry-table/>
+    <app-journal-entry-table [entries]="account.lines"/>
 }
