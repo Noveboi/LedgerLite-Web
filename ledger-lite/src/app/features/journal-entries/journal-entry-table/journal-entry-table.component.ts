@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table'
 import { JournalEntryLine } from '../journal-entry.types';
 
@@ -9,10 +9,7 @@ import { JournalEntryLine } from '../journal-entry.types';
   styleUrl: './journal-entry-table.component.css'
 })
 export class JournalEntryTableComponent {
-  test: JournalEntryLine[] = [
-    {id: '', entryId: '', occursAt: '2025-05-30', entryDescription: 'Hello!', credit: 0, debit: 10},
-    {id: '', entryId: '', occursAt: '2025-05-31', entryDescription: 'Hello 2!', credit: 100, debit: 0},
-  ]
+  entries = input<readonly JournalEntryLine[]>();
 
   columns = ['occursAt', 'entryDescription', 'credit', 'debit']
 }
