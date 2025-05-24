@@ -18,8 +18,6 @@ import { ButtonComponent } from "../../../../../components/button/button.compone
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
-  private auth = inject(AuthService);
-
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
@@ -28,7 +26,6 @@ export class LoginFormComponent {
   emailValidation = signal('')
   passwordValidation = signal('')
   onSubmit = output<LoginRequest>()
-  isLoading = this.auth.isLoading;
 
   constructor() {
     merge(this.loginForm.statusChanges, this.loginForm.valueChanges)

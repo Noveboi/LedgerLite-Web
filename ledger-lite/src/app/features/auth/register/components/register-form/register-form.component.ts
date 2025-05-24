@@ -34,7 +34,6 @@ export class RegisterFormComponent {
   registerStates = RegisterStatus;
   status = signal(RegisterStatus.SubmittingRequiredCredentials);
   register = output<RegisterRequest>();
-  isLoading = this.auth.isLoading;
 
   nextState() {
     if (this.status() >= 1) 
