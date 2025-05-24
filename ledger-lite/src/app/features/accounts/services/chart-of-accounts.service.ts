@@ -1,9 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Account, ChartOfAccounts } from '../accounts.types';
+import { Account, AccountWithLines, ChartOfAccounts } from '../accounts.types';
 import { CreateAccountRequest } from '../accounts.requests';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../core/services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EMPTY, Observable } from 'rxjs';
 
 const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
@@ -14,7 +15,9 @@ export class ChartOfAccountsService {
   private api = inject(ApiService);
   private snackbar = inject(MatSnackBar);
   private chartSignal = signal<ChartOfAccounts>(initialChart);
-
+  private selectedAccountSignal = signal<AccountWithLines | null>(null);
+  
+  selectedAccount = this.selectedAccountSignal.asReadonly();
   chart = this.chartSignal.asReadonly();
   chart$ = toObservable(this.chartSignal);
 
@@ -40,5 +43,9 @@ export class ChartOfAccountsService {
       this.snackbar.open(`Removed account "${resp?.name ?? 'N/F'}"`)
       this.getChartOfAccounts();
     })
+  }
+
+  getAccount(id: string): void {
+    this.api.get<AccountWithLines>(`/accounts/${id}`).subscribe(resp => this.selectedAccountSignal.set(resp));
   }
 }
