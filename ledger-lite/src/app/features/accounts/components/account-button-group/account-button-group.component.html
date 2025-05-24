@@ -2,11 +2,3 @@
 @if (account()?.isControl ?? false) {
     <app-create-account-button [parent]="account()"/>
 }
-
-@if (showNavigation()) {
-    <a [routerLink]="['accounts', account()?.id ?? '']" (click)="stopClickPropagation($event)">
-        <button mat-icon-button>
-            <mat-icon>visibility</mat-icon>
-        </button>
-    </a>
-}

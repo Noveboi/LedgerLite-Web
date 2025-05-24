@@ -1,7 +1,9 @@
 <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [matTreeNodePaddingIndent]="indentPixels">
         <button mat-icon-button disabled></button>
-        {{node.account.name}}
+        <a [routerLink]="['accounts', node?.account?.id ?? '']" (click)="stopClickPropagation($event)">
+            {{node.account.name}}
+        </a>
         <app-account-button-group [account]="node.account"/>
     </mat-tree-node>
     
@@ -16,7 +18,12 @@
                 {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
-        {{node.account.name}}
+        <a 
+        [title]="`Show ${node?.account?.name ?? ''}`"
+        [routerLink]="['accounts', node?.account?.id ?? '']" 
+        (click)="stopClickPropagation($event)">
+            {{node.account.name}}
+        </a>
         <app-account-button-group [account]="node.account"/>
     </mat-tree-node>
 </mat-tree>
