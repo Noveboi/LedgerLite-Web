@@ -1,5 +1,7 @@
 @if (account(); as account) {
-    <h1> {{ account.name }}</h1>
-
-    <app-journal-entry-table></app-journal-entry-table>
+    <div id="page-header">
+        <app-account-heading [account]="account"/>
+    </div>
+    
+    <app-journal-entry-table/>
 }

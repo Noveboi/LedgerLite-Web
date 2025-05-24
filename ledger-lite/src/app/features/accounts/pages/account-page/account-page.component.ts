@@ -1,10 +1,11 @@
 import { Component, inject, Input } from '@angular/core';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
 import { JournalEntryTableComponent } from "../../../journal-entries/journal-entry-table/journal-entry-table.component";
+import { AccountHeadingComponent } from "../../components/account-heading/account-heading.component";
 
 @Component({
   selector: 'app-account-page',
-  imports: [JournalEntryTableComponent],
+  imports: [JournalEntryTableComponent, AccountHeadingComponent],
   templateUrl: './account-page.component.html',
   styleUrl: './account-page.component.css'
 })
