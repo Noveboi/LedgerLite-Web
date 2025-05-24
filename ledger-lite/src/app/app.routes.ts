@@ -13,6 +13,6 @@ export const routes: Routes = [
         path: '',
         canActivate: [isAuthenticatedGuard()],
         component: HomeLayoutComponent,
-        loadChildren: () => import('./features/home/home.routes').then((x) => x.HOME_ROUTES)
+        loadChildren: () => import('./features/home.routes').then((x) => x.HOME_ROUTES)
     }
 ];
