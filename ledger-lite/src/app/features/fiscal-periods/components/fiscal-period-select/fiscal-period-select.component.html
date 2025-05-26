@@ -1,0 +1,14 @@
+@if (fiscalPeriods(); as periods) {
+    @if (periods.length > 0) {
+        <mat-form-field>
+            <mat-select (selectionChange)="onPeriodSelected($event)" [(value)]="selectedPeriod">
+                @for (period of periods; track period.id) {
+                    <mat-option [value]="period"> {{ period.name }}</mat-option>
+                }
+            </mat-select>
+            <app-add-fiscal-period-button matSuffix [appearance]="'compact'"/>
+        </mat-form-field>  
+    } @else {
+        <app-add-fiscal-period-button [appearance]="'regular'"/>
+    }
+} 
