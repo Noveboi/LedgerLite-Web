@@ -3,13 +3,18 @@
         <mat-icon>menu</mat-icon>
       </button>
       <button (click)="toggleTheme()" mat-icon-button>
-        <mat-icon>colorize</mat-icon>
+        <mat-icon> {{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>
-      <app-logo></app-logo>
+      <a [routerLink]="['']">
+        <app-logo/>
+      </a>
 </mat-toolbar>
 
 <mat-sidenav-container class="nav-content">
   <mat-sidenav #sidenav mode="side" opened class="ll-sidenav">
+    <div id="fp-select-container">
+      <app-fiscal-period-select/>
+    </div>
     <app-account-tree class="snav-tree"/>
     <app-user-profile-banner/>
   </mat-sidenav>

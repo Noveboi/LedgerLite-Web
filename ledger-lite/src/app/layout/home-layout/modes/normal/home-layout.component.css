@@ -17,12 +17,15 @@ mat-sidenav-container {
     gap: .25em;
 }
 
-.ll-toolbar app-logo {
+.ll-toolbar a {
+    text-decoration: unset;
+    color: unset;
+    cursor: pointer;
     margin-left: .5em;
 }
 
 .ll-sidenav {
-    width: 240px;
+    width: 280px;
 }
 
 .ll-sidenav ::ng-deep .mat-drawer-inner-container {
@@ -35,4 +38,8 @@ mat-sidenav-container {
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+
+#fp-select-container {
+    width: 100%;
 }
