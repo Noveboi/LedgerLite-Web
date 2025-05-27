@@ -9,6 +9,7 @@ import type { ColDef, RowValueChangedEvent } from 'ag-grid-community';
 import { JournalEntryService } from '../services/journal-entry.service';
 import { Account, SlimAccount } from '../../accounts/accounts.types';
 import { ChartOfAccountsService } from '../../accounts/services/chart-of-accounts.service';
+import { FiscalPeriodService } from '../../fiscal-periods/services/fiscal-period.service';
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -21,6 +22,10 @@ ModuleRegistry.registerModules([AllCommunityModule])
 export class JournalEntryTableComponent {
   private entryService = inject(JournalEntryService);
   private accountService = inject(ChartOfAccountsService);
+  private periodService = inject(FiscalPeriodService);
+
+  entries = input<readonly JournalEntryLine[]>();
+  selectedPeriod = this.periodService.selectedPeriod;
 
   private currentAccount = computed(() => {
     const current = this.accountService.selectedAccount();
@@ -31,7 +36,6 @@ export class JournalEntryTableComponent {
     return current as Account;
   });
 
-  entries = input<readonly JournalEntryLine[]>();
   theme = themeMaterial.withParams({
     backgroundColor: 'var(--mat-sys-surface)',
     

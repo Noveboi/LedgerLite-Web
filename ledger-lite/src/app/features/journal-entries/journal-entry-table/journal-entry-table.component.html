@@ -1,3 +1,4 @@
+@if (selectedPeriod()) {
 @if (rows(); as rows) {
     <div id="entry-table-container">
         <button mat-stroked-button>
@@ -14,4 +15,7 @@
     </div>
 } @else {
     <p style="text-align: center;">No entries</p>
+} 
+} @else {
+    <p style="text-align: center;">No fiscal period selected.</p>
 }
