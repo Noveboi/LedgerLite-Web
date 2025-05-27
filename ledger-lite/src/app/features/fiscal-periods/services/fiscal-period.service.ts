@@ -27,9 +27,12 @@ export class FiscalPeriodService {
   constructor() {
     if (!this.isInitialized) {
       this.getFiscalPeriods();
-      this.fiscalPeriods$.pipe(first()).subscribe(periods =>{
-        if (periods.length > 0) {
-          return this.selectPeriod(periods[0]);
+      this.fiscalPeriods$.pipe(first(x => x.length > 0)).subscribe(periods => {
+        const periodId = this.settings.current().selectedPeriodId;
+        const period = periods.find(x => x.id == periodId);
+
+        if (period) {
+          this.selectPeriod(period);
         }
       })
     }
@@ -51,6 +54,11 @@ export class FiscalPeriodService {
   selectPeriod(period: FiscalPeriod) {
     const found = this.fiscalPeriodsSignal().find(x => x.id === period.id);
     if (found) {
+      const periodId = this.settings.current().selectedPeriodId;
+      if (found.id !== periodId) {
+        this.settings.current.update(x => ({...x, selectedPeriodId: found.id}));
+      }
+
       console.log('Select', found);
       this.selectedPeriodSignal.set(found);
     } else {

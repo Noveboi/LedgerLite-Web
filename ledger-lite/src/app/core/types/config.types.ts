@@ -7,4 +7,5 @@ export class UserSettings {
     systemTheme: SystemTheme = SystemTheme.Light;
     accessToken: string | null = null;
     refreshToken: string | null = null;    
+    selectedPeriodId: string | null = null;
 };
