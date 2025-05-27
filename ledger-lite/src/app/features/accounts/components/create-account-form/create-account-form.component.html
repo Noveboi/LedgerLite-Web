@@ -1,4 +1,4 @@
-<form name="create-account" [formGroup]="accountGroup" (submit)="createAccount()">
+<form name="create-account" [formGroup]="accountGroup" (ngSubmit)="createAccount()">
     <mat-form-field>
         <mat-label>Name</mat-label>
         <input type="text" matInput formControlName="name">
@@ -25,10 +25,9 @@
             </mat-select>
         </mat-form-field>
     }
-    <mat-checkbox formControlName="isPlaceholder">Placeholder</mat-checkbox>
     <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
-    <app-button type="submit">Create</app-button>
+    <mat-checkbox formControlName="isPlaceholder">Placeholder</mat-checkbox>
 </form>

@@ -1,12 +1,13 @@
 <h2 mat-dialog-title>
     Create Account
     @if (parent) {
-        under "{{ parent.name }}"
+        under '{{ parent.name }}'
     }
 </h2>
 <mat-dialog-content class="content">
     <app-create-account-form [parentAccount]="parent"/>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
+    <button mat-stroked-button mat-dialog-close>Close</button>
+    <button mat-flat-button>Create</button>
 </mat-dialog-actions>
