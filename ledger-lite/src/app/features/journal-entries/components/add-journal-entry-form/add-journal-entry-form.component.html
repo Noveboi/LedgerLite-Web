@@ -1,0 +1,53 @@
+<form name="add-journal-entry" (ngSubmit)="submit()" [formGroup]="entryGroup">
+    <mat-form-field >
+        <mat-label>Occurs</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="occursAt">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Reference Number</mat-label>
+        <input matInput type="text" formControlName="referenceNumber">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" formControlName="amount">
+    </mat-form-field>
+
+    <div class="accounts-group">
+        <div class="account-group">
+            <mat-form-field>
+                <mat-label>Current Account</mat-label>
+                <input matInput type="text" disabled [value]="currentAccount()?.name">
+            </mat-form-field>
+            <mat-radio-group aria-label="Credit or Debit account" formControlName="creditOrDebit">
+                <mat-radio-button value="credit">Credit</mat-radio-button>
+                <mat-radio-button value="debit">Debit</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="account-group">
+            <mat-form-field>
+                <mat-label>Transfer Account</mat-label>
+                <input matInput type="text" formControlName="transferAccount" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                    @for (account of accounts; track account.id) {
+                        <mat-option [value]="account">{{ account.name }}</mat-option>
+                    }
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-radio-group aria-label="Credit or Debit account" [value]="transferAccountCreditOrDebit()" disabled>
+                <mat-radio-button value="credit">Credit</mat-radio-button>
+                <mat-radio-button value="debit">Debit</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button type="submit" style="display: none;"></button>
+</form>
