@@ -1,10 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Account, AccountWithLines, ChartOfAccounts } from '../accounts.types';
+import { Account, AccountWithLines, ChartAccountNode, ChartOfAccounts, SlimAccount } from '../accounts.types';
 import { CreateAccountRequest } from '../accounts.requests';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../core/services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Observable } from 'rxjs';
 
 const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
@@ -25,6 +24,18 @@ export class ChartOfAccountsService {
     if (this.chartSignal() === initialChart) {
       this.getChartOfAccounts();
     }
+  }
+
+  getAllAccounts(): SlimAccount[] {
+    const accounts: SlimAccount[] = [];
+    this.chart().accounts.forEach(node => accounts.push(...this.getAllAccountsRecursive(node)));
+    return accounts;
+  }
+
+  private getAllAccountsRecursive(node: ChartAccountNode): SlimAccount[] {
+    const accounts: SlimAccount[] = [node.account];
+    node.children.forEach(child => accounts.push(...this.getAllAccountsRecursive(child)))
+    return accounts;
   }
   
   getChartOfAccounts(): void {

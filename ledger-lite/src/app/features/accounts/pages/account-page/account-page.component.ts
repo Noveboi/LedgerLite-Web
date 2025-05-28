@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
-import { JournalEntryTableComponent } from "../../../journal-entries/journal-entry-table/journal-entry-table.component";
+import { JournalEntryTableComponent } from "../../../journal-entries/components/journal-entry-table/journal-entry-table.component";
 import { AccountHeadingComponent } from "../../components/account-heading/account-heading.component";
 
 @Component({
