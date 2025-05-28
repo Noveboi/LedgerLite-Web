@@ -10,6 +10,9 @@ import { JournalEntryService } from '../../services/journal-entry.service';
 import { Account, SlimAccount } from '../../../accounts/accounts.types';
 import { ChartOfAccountsService } from '../../../accounts/services/chart-of-accounts.service';
 import { FiscalPeriodService } from '../../../fiscal-periods/services/fiscal-period.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddJournalEntryDialogComponent } from '../add-journal-entry-dialog/add-journal-entry-dialog.component';
+import { Router } from '@angular/router';
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -23,6 +26,8 @@ export class JournalEntryTableComponent {
   private entryService = inject(JournalEntryService);
   private accountService = inject(ChartOfAccountsService);
   private periodService = inject(FiscalPeriodService);
+  private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   entries = input<readonly JournalEntryLine[]>();
   selectedPeriod = this.periodService.selectedPeriod;
@@ -36,10 +41,7 @@ export class JournalEntryTableComponent {
     return current as Account;
   });
 
-  theme = themeMaterial.withParams({
-    backgroundColor: 'var(--mat-sys-surface)',
-    
-  });
+  theme = themeMaterial;
 
   rows = computed<JournalEntryTableRow[]>(() => this.entries()?.map<JournalEntryTableRow>(line => ({
     credit: line.credit,
@@ -54,7 +56,18 @@ export class JournalEntryTableComponent {
   columnDefinitions: ColDef<JournalEntryTableRow>[] = [
     { field: 'occursAt' },
     { field: 'description' },
-    { field: 'transferAccount' },
+    { 
+      field: 'transferAccount', 
+      valueGetter: (entry) => entry.data?.transferAccount?.name ?? '',
+      cellStyle: { fontWeight: 'bold', cursor: 'pointer' },
+      onCellClicked: (e) => {
+        e.event?.stopPropagation();
+        const account = e.data?.transferAccount;
+        if (account && (!e.api.getEditingCells() || e.api.getEditingCells().length === 0)) {
+          this.router.navigate(['accounts', account.id])
+        }
+      }
+    },
     { field: 'credit' },
     { field: 'debit' }
   ];
@@ -94,6 +107,12 @@ export class JournalEntryTableComponent {
       entryDescription: row.description,
       transferAccountId: row.transferAccount.id
     })
+  }
+
+  openRecordEntryDialog() {
+    this.dialog.open(AddJournalEntryDialogComponent, {
+      disableClose: true
+    });
   }
 }
 

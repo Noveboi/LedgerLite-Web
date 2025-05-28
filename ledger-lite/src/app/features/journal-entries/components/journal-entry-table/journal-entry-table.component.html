@@ -1,7 +1,7 @@
 @if (selectedPeriod()) {
 @if (rows(); as rows) {
     <div id="entry-table-container">
-        <button mat-stroked-button>
+        <button mat-stroked-button (click)="openRecordEntryDialog()">
             <mat-icon>add</mat-icon>
             Add Entry
         </button>
