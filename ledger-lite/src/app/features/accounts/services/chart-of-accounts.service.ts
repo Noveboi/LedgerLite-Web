@@ -4,6 +4,7 @@ import { CreateAccountRequest } from '../accounts.requests';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../core/services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FiscalPeriodService } from '../../fiscal-periods/services/fiscal-period.service';
 
 const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
@@ -13,6 +14,8 @@ const initialChart: ChartOfAccounts = {id: '', accounts: []}
 export class ChartOfAccountsService {
   private api = inject(ApiService);
   private snackbar = inject(MatSnackBar);
+  private periodService = inject(FiscalPeriodService);
+
   private chartSignal = signal<ChartOfAccounts>(initialChart);
   private selectedAccountSignal = signal<AccountWithLines | null>(null);
   
@@ -33,7 +36,7 @@ export class ChartOfAccountsService {
   }
 
   private getAllAccountsRecursive(node: ChartAccountNode): SlimAccount[] {
-    const accounts: SlimAccount[] = [node.account];
+    const accounts: SlimAccount[] = node.account.isControl ? [] : [node.account];
     node.children.forEach(child => accounts.push(...this.getAllAccountsRecursive(child)))
     return accounts;
   }
@@ -56,7 +59,18 @@ export class ChartOfAccountsService {
     })
   }
 
+  refreshSelectedAccount() { 
+    const selected = this.selectedAccount();
+    if (selected) {
+      this.getAccount(selected.id);
+    }
+  }
+
   getAccount(id: string): void {
-    this.api.get<AccountWithLines>(`/accounts/${id}`).subscribe(resp => this.selectedAccountSignal.set(resp));
+    const period = this.periodService.selectedPeriod();
+
+    const route = `/accounts/${id}${ period ? `/period/${period.id}` : ''}`
+
+    this.api.get<AccountWithLines>(route).subscribe(resp => this.selectedAccountSignal.set(resp));
   }
 }
