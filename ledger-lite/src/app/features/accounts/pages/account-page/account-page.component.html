@@ -3,5 +3,7 @@
         <app-account-heading [account]="account"/>
     </div>
     
-    <app-journal-entry-table [entries]="account.lines"/>
+    @if (!account.isControl) {
+        <app-journal-entry-table [entries]="account.lines"/>
+    }
 }
