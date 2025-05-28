@@ -1,0 +1,21 @@
+@if (selectedPeriod()) {
+@if (rows(); as rows) {
+    <div id="entry-table-container">
+        <button mat-stroked-button>
+            <mat-icon>add</mat-icon>
+            Add Entry
+        </button>
+        <ag-grid-angular
+            editType="fullRow"
+            [rowData]="rows"
+            [columnDefs]="columnDefinitions"
+            [defaultColDef]="defaultColumnDefinitions"
+            [theme]="theme"
+            (rowValueChanged)="onRowValueChanged($event)"/>
+    </div>
+} @else {
+    <p style="text-align: center;">No entries</p>
+} 
+} @else {
+    <p style="text-align: center;">No fiscal period selected.</p>
+}
