@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,8 @@ import { accountTypes, SlimAccount } from '../../accounts.types';
 import { currencies } from '../../../../types/core.types';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
+import { CreateAccountRequest } from '../../accounts.requests';
+import { AppFormComponent } from '../../../../core/types/component.types';
 
 @Component({
   selector: 'app-create-account-form',
@@ -14,9 +16,9 @@ import { ChartOfAccountsService } from '../../services/chart-of-accounts.service
   templateUrl: './create-account-form.component.html',
   styleUrl: './create-account-form.component.css'
 })
-export class CreateAccountFormComponent {
-  private accountService = inject(ChartOfAccountsService);
+export class CreateAccountFormComponent implements AppFormComponent {
   parentAccount = input<SlimAccount>();
+  validSubmit = output<CreateAccountRequest>();
 
   accountGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -30,15 +32,14 @@ export class CreateAccountFormComponent {
   accountTypes = accountTypes;
   currencies = currencies;
 
-  createAccount() {
+  submit() {
     if (this.accountGroup.invalid)
       return;
 
     const form = this.accountGroup.value;
-
     const parent = this.parentAccount();
 
-    this.accountService.createAccount({
+    this.validSubmit.emit({
       name: form.name ?? '',
       number: form.number ?? '',
       description: form.description ?? null,

@@ -5,9 +5,9 @@
     }
 </h2>
 <mat-dialog-content class="content">
-    <app-create-account-form [parentAccount]="parent"/>
+    <app-create-account-form #form [parentAccount]="parent" (validSubmit)="createAccount($event)"/>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-stroked-button mat-dialog-close>Close</button>
-    <button mat-flat-button>Create</button>
+    <button mat-flat-button [externalSubmit]="form">Create</button>
 </mat-dialog-actions>
