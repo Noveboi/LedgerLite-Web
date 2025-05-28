@@ -7,6 +7,7 @@ import { MatInput } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FiscalPeriodService } from '../../services/fiscal-period.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { getDateString } from '../../../../core/services/dates/dates.utilities';
 
 @Component({
   selector: 'app-add-fiscal-period-form',
@@ -38,18 +39,12 @@ export class AddFiscalPeriodFormComponent {
 
     this.periodService.createFiscalPeriod({
       name: value.name,
-      startDate: this.getDateString(value.startDate),
-      endDate: this.getDateString(value.endDate)
+      startDate: getDateString(value.startDate),
+      endDate: getDateString(value.endDate)
     }).subscribe(resp => {
       this.snackbar.open(`Successfully created period '${resp.name}'`)
       this.onValidSubmit.emit();
       this.periodService.selectPeriod(resp);
     })
-  }
-
-  private getDateString(date: Date) {
-    const offset = date.getTimezoneOffset()
-    date = new Date(date.getTime() - (offset*60*1000))
-    return date.toISOString().split('T')[0]
   }
 }
