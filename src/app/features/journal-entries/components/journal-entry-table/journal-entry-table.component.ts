@@ -1,9 +1,9 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table'
 import { JournalEntryLine } from '../../journal-entry.types';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { AllCommunityModule, ModuleRegistry, themeMaterial } from 'ag-grid-community';
+import { themeMaterial } from 'ag-grid-community';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, RowValueChangedEvent } from 'ag-grid-community';
 import { JournalEntryService } from '../../services/journal-entry.service';
@@ -13,8 +13,6 @@ import { FiscalPeriodService } from '../../../fiscal-periods/services/fiscal-per
 import { MatDialog } from '@angular/material/dialog';
 import { AddJournalEntryDialogComponent } from '../add-journal-entry-dialog/add-journal-entry-dialog.component';
 import { Router } from '@angular/router';
-
-ModuleRegistry.registerModules([AllCommunityModule])
 
 @Component({
   selector: 'app-journal-entry-table',
