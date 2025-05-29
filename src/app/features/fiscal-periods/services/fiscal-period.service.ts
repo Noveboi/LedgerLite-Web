@@ -58,11 +58,7 @@ export class FiscalPeriodService {
       if (found.id !== periodId) {
         this.settings.current.update(x => ({...x, selectedPeriodId: found.id}));
       }
-
-      console.log('Select', found);
       this.selectedPeriodSignal.set(found);
-    } else {
-      console.warn(`Could not find period`, period)
     }
   }
 }
