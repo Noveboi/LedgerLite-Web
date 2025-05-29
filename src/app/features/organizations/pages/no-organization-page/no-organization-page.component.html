@@ -1,0 +1,19 @@
+<div class="no-org-container">
+    <h1>You're not in an organization/company!</h1>
+
+    <div class="outlet">
+        <div class="no-org-actions">
+            <a [routerLink]="['create']">
+                <button type="button" mat-flat-button>Create Organization</button>
+            </a>
+            
+            <a [routerLink]="['join']">
+                <button type="button" mat-flat-button>Join Organization</button>
+            </a>
+        </div>
+
+        <router-outlet></router-outlet>
+    </div>
+    
+    <app-user-profile-banner/>
+</div>

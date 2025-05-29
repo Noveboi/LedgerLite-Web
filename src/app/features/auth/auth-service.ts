@@ -1,11 +1,12 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { LoginRequest, AccessTokenResponse } from '../../features/auth/login/login.types';
-import { RegisterRequest } from '../../features/auth/register/register.types';
-import { User } from '../../features/users/users.types';
+import { LoginRequest, AccessTokenResponse } from './login/login.types';
+import { RegisterRequest } from './register/register.types';
+import { User } from '../users/users.types';
 import { Router } from '@angular/router';
-import { ApiService } from './api/api.service';
-import { SettingsService } from './storage/settings.service';
+import { ApiService } from '../../core/services/api/api.service';
+import { SettingsService } from '../../core/services/storage/settings.service';
 import { EMPTY, Observable, tap } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
   private api = inject(ApiService);
   private router = inject(Router);
   private settings = inject(SettingsService);
+  private snackbar = inject(MatSnackBar);
 
   private authState = signal<AuthState>(initialState);
 
@@ -43,17 +45,16 @@ export class AuthService {
     )
   }
 
-  getUser(): void {
-    this.api.get<User>('/me').subscribe({
-      next: (resp) => this.authState.update(x => ({...x, user: resp})),
-      error: (err) => console.log(err)
-    })
+  getUser(): Observable<User> {
+    return this.api.get<User>('/me').pipe(
+      tap(resp => this.authState.update(x => ({...x, user: resp})))
+    );
   }
 
   tryGetTokenFromSettings(): string | null {
     const current = this.settings.current();
     if (current.accessToken) {
-      this.getUser()
+      this.getUser().subscribe();
       this.setStateTokens(current.accessToken, current.refreshToken)
     }
 
@@ -61,15 +62,18 @@ export class AuthService {
   }
 
   login(request: LoginRequest): void {
-    this.api.post<AccessTokenResponse>('/login', request).subscribe((resp) => {
-      this.setStateTokens(resp.accessToken, resp.refreshToken)
-      this.settings.current.update(s => ({
-        ...s,
-        accessToken: resp.accessToken,
-        refreshToken: resp.refreshToken 
-      }))
+    this.api.post<AccessTokenResponse>('/login', request).subscribe({
+      next: (resp) => {
+        this.setStateTokens(resp.accessToken, resp.refreshToken)
+        this.settings.current.update(s => ({
+          ...s,
+          accessToken: resp.accessToken,
+          refreshToken: resp.refreshToken 
+        }))
 
-      this.getUserAndHome();
+        this.getUserAndHome();
+      },
+      error: () => this.snackbar.open('Wrong username or password.')
     })
   }
 
@@ -85,15 +89,14 @@ export class AuthService {
         refreshToken: null
       }))
 
-    this.router.navigate(['auth', 'login'])
+    this.router.navigate([''])
   }
 
     private getUserAndHome(): void {
       if (this.authState().accessToken === null) {
         throw new Error('Cannot get user without an access token.')
       }
-      this.api.get<User>('/me').subscribe((resp) => {
-        this.authState.update(x => ({ ...x, user: resp }));
+      this.getUser().subscribe(() => {
         this.router.navigate(['']);
       });
     }

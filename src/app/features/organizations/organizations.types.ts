@@ -1,8 +1,5 @@
-export interface CreateOrganizationRequest {
-    name: string
-}
 
-export interface CreateOrganizationResponse {
+export interface Organization {
     id: string,
-    name: string
+    name: string,
 }
