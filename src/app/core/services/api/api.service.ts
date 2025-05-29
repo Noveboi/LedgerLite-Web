@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { catchError, map, Observable, of } from 'rxjs';
-import { ApiError } from '../../../types/error.types';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,10 @@ export class ApiService {
 
   post<TResponse>(route: string, body: any): Observable<TResponse> {
     return this.http.post<TResponse>(this.getUrl(route), body);
+  }
+
+  put<TResponse>(route: string, body?: any): Observable<TResponse> {
+    return this.http.put<TResponse>(this.getUrl(route), body);
   }
 
   delete<TResponse>(route: string): Observable<TResponse> {
