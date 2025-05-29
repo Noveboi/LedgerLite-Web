@@ -1,5 +1,5 @@
 import { Component, inject, output, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { AppFormComponent } from '../../../../core/types/component.types';
@@ -12,6 +12,7 @@ import { ChartOfAccountsService } from '../../../accounts/services/chart-of-acco
 import { FiscalPeriodService } from '../../../fiscal-periods/services/fiscal-period.service';
 import { getDateString } from '../../../../core/services/dates/dates.utilities';
 import { SlimAccount } from '../../../accounts/accounts.types';
+import { EntryValidators } from '../../validation/journal-entry.validation';
 
 @Component({
   selector: 'app-add-journal-entry-form',
@@ -26,7 +27,7 @@ export class AddJournalEntryFormComponent implements AppFormComponent {
 
   transferAccountCreditOrDebit = signal<'credit' | 'debit'>('debit');
   currentAccount = this.accountService.selectedAccount;
-  accounts = this.accountService.getAllAccounts();
+  accounts = this.accountService.getAllAccounts().filter(account => account.id !== this.currentAccount()?.id);
   validSubmit = output<CreateJournalEntryRequest>();
 
   entryGroup = new FormGroup({
@@ -35,7 +36,9 @@ export class AddJournalEntryFormComponent implements AppFormComponent {
     description: new FormControl(''),
     amount: new FormControl(0, [Validators.min(0)]),
     creditOrDebit: new FormControl('credit'),
-    transferAccount: new FormControl<SlimAccount | null>(null, [Validators.required])
+    transferAccount: new FormControl<SlimAccount | null>(null, [
+      Validators.required, 
+      EntryValidators.onlyExistingAccounts(this.accounts)])
   });
 
   constructor() {

@@ -36,6 +36,9 @@
                         <mat-option [value]="account">{{ account.name }}</mat-option>
                     }
                 </mat-autocomplete>
+                @if (entryGroup.hasError('account')) {
+                    <mat-error>{{ entryGroup.getError('account') }}</mat-error>
+                }
             </mat-form-field>
             <mat-radio-group aria-label="Credit or Debit account" [value]="transferAccountCreditOrDebit()" disabled>
                 <mat-radio-button value="credit">Credit</mat-radio-button>
