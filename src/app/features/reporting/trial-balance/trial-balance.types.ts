@@ -1,5 +1,5 @@
 import { FiscalPeriod } from "../../fiscal-periods/fiscal-periods.types";
-import { AccountBalanceDto as AccountBalance } from "../reporting.types";
+import { AccountBalance as AccountBalance } from "../reporting.types";
 
 export interface TrialBalance {
     totalCredits: number,

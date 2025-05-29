@@ -1,0 +1,12 @@
+@if (selectedPeriod(); as period) {
+    <h1>Trial Balance for {{ period.name }}</h1>
+    @if (current(); as trialBalance) {
+        <ag-grid-angular 
+            [columnDefs]="colDefs"
+            [defaultColDef]="defaultColDefs"
+            [rowData]="trialBalance.workingBalances"/>
+    }
+} @else {
+    <h1>Start by selecting or creating a fiscal period!</h1>
+}
+
