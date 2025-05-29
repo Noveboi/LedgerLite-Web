@@ -1,10 +1,22 @@
-@if (parent()) {
-    <button mat-icon-button (click)="openCreateAccountDialog($event)"> 
-        <mat-icon>add</mat-icon>
-    </button>
-} @else {
-    <button mat-flat-button (click)="openCreateAccountDialog($event)"> 
-        <mat-icon>add</mat-icon>
-        Add Account
-    </button>
+@if (appearance(); as appearance) {
+    @switch (appearance) {
+        @case('menu') {
+            <button mat-menu-item (click)="openCreateAccountDialog()">
+                <mat-icon>add</mat-icon>
+                Add Account 
+                @if (parent(); as parent) {
+                    under {{ parent.name }}
+                }
+            </button>
+        }
+        @case ('regular') {
+            <button mat-flat-button (click)="openCreateAccountDialog()">
+                <mat-icon>add</mat-icon>
+                Add Account 
+                @if (parent(); as parent) {
+                    under {{ parent.name }}
+                }
+            </button>
+        }
+    }
 }

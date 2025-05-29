@@ -15,7 +15,8 @@ export interface AccountWithLines extends Account {
 }
 
 export interface Account extends SlimAccount {
-    number: string
+    number: string,
+    description: string
 }
 
 export interface SlimAccount {

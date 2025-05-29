@@ -4,7 +4,7 @@
         <a [routerLink]="['accounts', node?.account?.id ?? '']" (click)="stopClickPropagation($event)">
             {{node.account.name}}
         </a>
-        <app-account-button-group [account]="node.account"/>
+        <app-account-menu [account]="node.account"/>
     </mat-tree-node>
     
     <mat-tree-node 
@@ -24,7 +24,7 @@
         (click)="stopClickPropagation($event)">
             {{node.account.name}}
         </a>
-        <app-account-button-group [account]="node.account"/>
+        <app-account-menu [account]="node.account"/>
     </mat-tree-node>
 </mat-tree>
 

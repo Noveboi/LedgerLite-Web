@@ -1,3 +1,6 @@
-<button mat-icon-button (click)="handleRemove($event)">
+<button mat-menu-item (click)="handleRemove()">
     <mat-icon>remove</mat-icon>
+    @if (account(); as account) {
+        Remove {{ account.name }}
+    }
 </button>

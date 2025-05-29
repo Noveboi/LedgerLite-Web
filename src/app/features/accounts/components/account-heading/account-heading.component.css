@@ -1,0 +1,8 @@
+h1, p {
+    margin: 0;
+}
+
+p.account-description {
+    margin-top: .25em;
+    margin-bottom: 1em;
+}

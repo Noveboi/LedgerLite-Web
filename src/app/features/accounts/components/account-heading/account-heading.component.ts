@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { SlimAccount } from '../../accounts.types';
+import { Account } from '../../accounts.types';
 
 @Component({
   selector: 'app-account-heading',
@@ -9,5 +9,5 @@ import { SlimAccount } from '../../accounts.types';
   styleUrl: './account-heading.component.css'
 })
 export class AccountHeadingComponent {
-  account = input<SlimAccount>();
+  account = input.required<Account>();
 }

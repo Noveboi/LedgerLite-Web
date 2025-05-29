@@ -1,0 +1,11 @@
+@if (account(); as account) {
+    <button mat-icon-button aria-label="Toggle Account Menu" [matMenuTriggerFor]="accountMenu" (click)="stopPropagation($event)">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #accountMenu="matMenu">
+        @if (account.isControl) {
+            <app-create-account-button [parent]="account" appearance="menu"/>
+        }
+        <app-remove-account-button [account]="account"/>
+    </mat-menu>
+}

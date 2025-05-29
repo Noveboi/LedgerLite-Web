@@ -1,4 +1,7 @@
-<h1>
-    <mat-icon fontIcon="account_balance" aria-hidden="true"/>
-    {{ account()?.name ?? '' }}
-</h1>
+@if (account(); as account) {
+    <h1>
+        <mat-icon fontIcon="account_balance" aria-hidden="true"/>
+        {{ account.name }}
+    </h1>
+    <p class="account-description">{{ account.description }}</p>
+}
