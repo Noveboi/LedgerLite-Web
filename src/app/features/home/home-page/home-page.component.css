@@ -4,3 +4,9 @@
     flex-direction: column;
     gap: 1em;
 }
+
+.period-overview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
