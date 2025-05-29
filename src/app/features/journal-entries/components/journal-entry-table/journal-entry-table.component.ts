@@ -62,7 +62,7 @@ export class JournalEntryTableComponent {
         e.event?.stopPropagation();
         const account = e.data?.transferAccount;
         if (account && (!e.api.getEditingCells() || e.api.getEditingCells().length === 0)) {
-          this.router.navigate(['accounts', account.id])
+          this.router.navigate(['home', 'accounts', account.id])
         }
       }
     },

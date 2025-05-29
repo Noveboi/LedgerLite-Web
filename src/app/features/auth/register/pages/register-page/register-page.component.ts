@@ -1,7 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { RegisterFormComponent } from "../../components/register-form/register-form.component";
 import { RegisterRequest } from '../../register.types';
-import { AuthService } from '../../../../../core/services/auth-service';
+import { AuthService } from '../../../auth-service';
+import { navigateToHomeIfAuthenticated } from '../../../auth.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -11,7 +13,12 @@ import { AuthService } from '../../../../../core/services/auth-service';
 })
 export class RegisterPageComponent {
   private auth = inject(AuthService);
-  
+  private router = inject(Router);
+
+  constructor() {
+    effect(() => navigateToHomeIfAuthenticated(this.auth, this.router))
+  }
+
   register(request: RegisterRequest) {
     this.auth.register(request);
   }

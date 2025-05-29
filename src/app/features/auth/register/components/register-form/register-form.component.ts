@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RegisterRequest } from '../../register.types';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from "../../../../../components/button/button.component";
-import { AuthService } from '../../../../../core/services/auth-service';
+import { AuthService } from '../../../auth-service';
 
 @Component({
   selector: 'app-register-form',

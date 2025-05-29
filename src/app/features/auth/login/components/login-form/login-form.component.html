@@ -1,20 +1,21 @@
 <form name="login" (submit)="onFormSubmit($event)" [formGroup]="loginForm">
-    @let username = loginForm.controls.username;
-    @let pass = loginForm.controls.password;
-
     <mat-form-field>
         <mat-label>Username</mat-label>
         <input type="text" matInput formControlName="username">
-        @if (username.invalid || username.dirty) {
-            <mat-error>{{emailValidation()}}</mat-error>
-        }
     </mat-form-field>
     <mat-form-field>
         <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password">
-        @if (pass.invalid) {
-            <mat-error>{{passwordValidation()}}</mat-error>
-        }
+        <input [type]="hide() ? 'password' : 'text'" matInput formControlName="password">
+        <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+        >
+        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
     </mat-form-field>
 
     <app-button type="submit">Sign In</app-button>

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../core/services/auth-service';
+import { AuthService } from '../../auth/auth-service';
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonComponent } from "../../../components/button/button.component";
 

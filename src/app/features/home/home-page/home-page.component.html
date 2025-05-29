@@ -1,12 +1,3 @@
-@if (user(); as user) {
-    @if (user?.organization) {
-        <div class="period-overview">
-            <app-trial-balance-table/>
-        </div>
-    } @else {
-        <div class="no-org-actions">
-            <button type="button" mat-flat-button (click)="navigateToCreateOrganization()">Create Organization</button>
-            <button type="button" mat-flat-button>Join Organization</button>
-        </div>
-    }
-}
+<div class="period-overview">
+    <app-trial-balance-table/>
+</div>

@@ -30,7 +30,11 @@ export class TrialBalanceTableComponent {
   }
 
   colDefs: ColDef<AccountBalance>[] = [
-    { headerName: 'Account', valueGetter: x => x.data?.account.name ?? ''},
+    { 
+      headerName: 'Account', 
+      valueGetter: x => x.data?.account.name ?? '',
+      flex: 2
+    },
     { field: 'credit', valueFormatter: x => `€${x.value?.toLocaleString() ?? '0'}`},
     { field: 'debit', valueFormatter: x => `€${x.value?.toLocaleString() ?? '0'}`}
   ]
