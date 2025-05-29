@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from "@angular/common/http";
-import { catchError, defer, EMPTY, filter, Observable, retry, retryWhen, switchMap, take, throwError, timeout, timer } from "rxjs";
-import { AuthService } from "../services/auth-service";
+import { catchError, defer, filter, Observable, switchMap, take, throwError, timeout, timer } from "rxjs";
+import { AuthService } from "../../features/auth/auth-service";
 import { inject } from "@angular/core";
 
 export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
@@ -8,7 +8,11 @@ export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): 
 
   let token = auth.accessToken();
 
-  if (token && !req.url.includes('/refresh') && !req.url.includes('/login')) {
+  if (req.url.includes('/login')) {
+    return next(req);
+  }
+
+  if (token && !req.url.includes('/refresh')) {
     req = authenticateRequest(req, token);
   }
 
