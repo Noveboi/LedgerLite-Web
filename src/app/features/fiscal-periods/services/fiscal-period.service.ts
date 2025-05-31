@@ -18,7 +18,6 @@ export class FiscalPeriodService {
   private fiscalPeriodsSignal = signal<readonly FiscalPeriod[]>([]);
   private selectedPeriodSignal = signal<FiscalPeriod | null>(null);
 
-  fiscalPeriods$ = toObservable(this.fiscalPeriodsSignal);
   fiscalPeriods = this.fiscalPeriodsSignal.asReadonly();
 
   selectedPeriod$ = toObservable(this.selectedPeriodSignal);
@@ -26,28 +25,14 @@ export class FiscalPeriodService {
 
   constructor() {
     if (!this.isInitialized) {
-      this.getFiscalPeriods();
-      this.fiscalPeriods$.pipe(first(x => x.length > 0)).subscribe(periods => {
-        const periodId = this.settings.current().selectedPeriodId;
-        const period = periods.find(x => x.id == periodId);
-
-        if (period) {
-          this.selectPeriod(period);
-        }
-      })
+      const periodId = this.settings.current().selectedPeriodId;
+      this.getAndSelectPeriod(periodId);
     }
-  }
-
-  getFiscalPeriods(): void {
-    this.api.get<FiscalPeriod[]>('/periods').subscribe(resp => {
-      this.fiscalPeriodsSignal.set(resp);
-      this.isInitialized = true;
-    })
   }
 
   createFiscalPeriod(request: CreateFiscalPeriodRequest): Observable<FiscalPeriod> {
     return this.api.post<FiscalPeriod>('/periods', request).pipe(
-      tap(() => this.getFiscalPeriods())
+      tap(period => this.getAndSelectPeriod(period.id))
     )
   }
 
@@ -60,5 +45,27 @@ export class FiscalPeriodService {
       }
       this.selectedPeriodSignal.set(found);
     }
+  }
+
+    private getFiscalPeriods(): Observable<FiscalPeriod[]> {
+      return this.api.get<FiscalPeriod[]>('/periods').pipe(
+        tap(resp => {
+          this.fiscalPeriodsSignal.set(resp);
+          this.isInitialized = true;
+        })
+      );
+    }
+
+  private getAndSelectPeriod(periodId: string | null): void {
+    if (!periodId)
+      return;
+
+    this.getFiscalPeriods().subscribe(periods => {
+      const period = periods.find(x => x.id == periodId);
+
+      if (period) {
+        this.selectPeriod(period);
+      } 
+    });
   }
 }

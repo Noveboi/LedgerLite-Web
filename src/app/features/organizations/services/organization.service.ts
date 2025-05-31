@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 import { AuthService } from '../../auth/auth-service';
-import { Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { CreateOrganizationRequest, CreateOrganizationResponse } from '../organization.requests';
 import { Organization } from '../organizations.types';
 import { Router } from '@angular/router';
@@ -14,8 +14,12 @@ export class OrganizationService {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  create(request: CreateOrganizationRequest): void {
-    this.api.post<CreateOrganizationResponse>('/organizations', request).subscribe(() => this.auth.getUser());
+  create(request: CreateOrganizationRequest): Observable<CreateOrganizationResponse> {
+    return this.api.post<CreateOrganizationResponse>('/organizations', request).pipe(
+      switchMap((resp) => this.auth.getUser().pipe(
+        map(() => resp)
+      ))
+    );
   }
 
   getAll(): Observable<Organization[]> {
@@ -24,8 +28,7 @@ export class OrganizationService {
 
   join(organizationId: string) {
     this.api.put(`/organizations/${organizationId}/join`).subscribe(() => {
-      this.auth.getUser();
-      this.router.navigate([''])
+      this.auth.getUser().subscribe(() => this.router.navigate(['']));
     })
   }
 }
