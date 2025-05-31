@@ -13,14 +13,14 @@
 <mat-sidenav-container class="nav-content">
 <mat-sidenav #sidenav mode="side" opened class="ll-sidenav">
     <div id="fp-select-container">
-    <app-fiscal-period-select/>
+        <app-fiscal-period-select/>
     </div>
     <app-account-tree class="snav-tree"/>
     <app-user-profile-banner/>
 </mat-sidenav>
 <mat-sidenav-content>
-    <div class="main-content">
-    <router-outlet></router-outlet>
-    </div>
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
 </mat-sidenav-content>
 </mat-sidenav-container>
