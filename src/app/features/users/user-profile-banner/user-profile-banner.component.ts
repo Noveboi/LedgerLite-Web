@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../auth/auth-service';
 import { MatIconModule } from '@angular/material/icon';
-import { ButtonComponent } from "../../../components/button/button.component";
 import { MatButtonModule } from '@angular/material/button';
+import { Role } from '../users.types';
 
 @Component({
   selector: 'app-user-profile-banner',
@@ -14,6 +14,8 @@ export class UserProfileBannerComponent {
   private auth = inject(AuthService);
 
   user = this.auth.user;
+
+  displayRoles = (roles: readonly Role[]) => roles.map(x => x.name).join(', ');
 
   logout() {
     this.auth.logout();

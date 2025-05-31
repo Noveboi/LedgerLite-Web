@@ -13,7 +13,8 @@ import { MatMenuItem } from '@angular/material/menu';
   styleUrl: './create-account-button.component.css'
 })
 export class CreateAccountButtonComponent {
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
+  
   parent = input<SlimAccount>();
   appearance = input<'menu' | 'regular'>('regular');
 

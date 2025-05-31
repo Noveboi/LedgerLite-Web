@@ -14,7 +14,7 @@
             @if (roles && roles.length > 0) {
                 <div class="user-roles">
                     <mat-icon>badge</mat-icon>
-                    {{ roles.join(', ') }}
+                    {{ displayRoles(roles) }}
                 </div>
             }
         }
