@@ -2,9 +2,11 @@ import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from "@angul
 import { catchError, defer, filter, Observable, switchMap, take, throwError, timeout, timer } from "rxjs";
 import { AuthService } from "../../features/auth/auth-service";
 import { inject } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const auth = inject(AuthService);
+  const snackbar = inject(MatSnackBar);
 
   let token = auth.accessToken();
 
@@ -18,8 +20,16 @@ export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): 
 
   return next(req).pipe(
     catchError((error: unknown) => {
-      if (error instanceof HttpErrorResponse && error.status === 401 && !req.url.includes('/refresh')) {
+      if (!(error instanceof HttpErrorResponse)){
+        return throwError(() => error);
+      }
+
+      if (error.status === 401 && !req.url.includes('/refresh')) {
         return handleUnauthorized(req, next, auth);
+      }
+
+      if (error.status === 403) {
+        snackbar.open('You are unauthorized to perform this action.')
       }
 
       return throwError(() => error);
