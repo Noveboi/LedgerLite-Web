@@ -1,17 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, inject, Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { ApiError, ValidationError } from '../../../types/error.types';
-import { first } from 'rxjs';
+import { ValidationError } from '../../../types/error.types';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
   private snackbar = inject(MatSnackBar)
 
   handleError(error: unknown): void {
-    console.log(error)
-
-    if (error instanceof HttpErrorResponse) {
+    if (error instanceof HttpErrorResponse && error.error) {
       if ('detail' in error.error) {
         this.showMessage(this.cleanDetail(error.error.detail))
       } else if (Array.isArray(error.error))  {
