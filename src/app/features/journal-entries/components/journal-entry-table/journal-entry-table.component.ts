@@ -13,6 +13,7 @@ import { FiscalPeriodService } from '../../../fiscal-periods/services/fiscal-per
 import { MatDialog } from '@angular/material/dialog';
 import { AddJournalEntryDialogComponent } from '../add-journal-entry-dialog/add-journal-entry-dialog.component';
 import { Router } from '@angular/router';
+import { PermissionsService } from '../../../../core/permissions/permissions.service';
 
 @Component({
   selector: 'app-journal-entry-table',
@@ -26,7 +27,9 @@ export class JournalEntryTableComponent {
   private periodService = inject(FiscalPeriodService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
+  private perms = inject(PermissionsService);
 
+  canModify = this.perms.isAllowedToModify;
   entries = input<readonly JournalEntryLine[]>();
   selectedPeriod = this.periodService.selectedPeriod;
 

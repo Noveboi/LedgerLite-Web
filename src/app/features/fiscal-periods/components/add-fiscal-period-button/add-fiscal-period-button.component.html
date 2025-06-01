@@ -1,13 +1,15 @@
-@switch (appearance()) {
-    @case ('compact') {
-       <button mat-icon-button (click)="openDialog($event)">
-            <mat-icon>add</mat-icon>
-        </button>
-    }
-    @default {
-         <button mat-button (click)="openDialog($event)">
-            <mat-icon>add</mat-icon>
-            Add Period
-        </button>
+@if (canModify()) {
+    @switch (appearance()) {
+        @case ('compact') {
+        <button mat-icon-button (click)="openDialog($event)">
+                <mat-icon>add</mat-icon>
+            </button>
+        }
+        @default {
+            <button mat-button (click)="openDialog($event)">
+                <mat-icon>add</mat-icon>
+                Add Period
+            </button>
+        }
     }
 }

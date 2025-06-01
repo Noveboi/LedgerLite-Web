@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddFiscalPeriodDialogComponent } from '../add-fiscal-period-dialog/add-fiscal-period-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PermissionsService } from '../../../../core/permissions/permissions.service';
 
 @Component({
   selector: 'app-add-fiscal-period-button',
@@ -12,6 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddFiscalPeriodButtonComponent {
   private dialog = inject(MatDialog);
+  private perms = inject(PermissionsService);
+
+  canModify = this.perms.isAllowedToModify;
 
   appearance = input<'regular' | 'compact'>();
 
