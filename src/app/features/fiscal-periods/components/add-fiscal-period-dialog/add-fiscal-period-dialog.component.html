@@ -1,7 +1,8 @@
 <h2 mat-dialog-title> Add Fiscal Period</h2>
 <mat-dialog-content>
-    <app-add-fiscal-period-form (onValidSubmit)="close()"/>
+    <app-add-fiscal-period-form (onValidSubmit)="close()" #form/>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-flat-button [mat-dialog-close]="false"> Close </button>
+    <button mat-stroked-button [mat-dialog-close]="false"> Close </button>
+    <button mat-flat-button [externalSubmit]="form"> Create </button>
 </mat-dialog-actions>

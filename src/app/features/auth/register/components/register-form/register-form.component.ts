@@ -1,4 +1,4 @@
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
@@ -6,29 +6,24 @@ import { MatInputModule } from '@angular/material/input';
 import { RegisterRequest } from '../../register.types';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from "../../../../../components/button/button.component";
-import { AuthService } from '../../../auth-service';
+import { RegisterValidators } from '../../register.validators';
 
 @Component({
   selector: 'app-register-form',
-  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule, RouterLink, ButtonComponent],
+  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule, ButtonComponent],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
-  private auth = inject(AuthService);
-
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.email]),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl('', [Validators.required]),
     username: new FormControl(''),
     firstName: new FormControl(''),
     lastName: new FormControl('')
-  }, (group): { [key: string]: any } | null => {
-    const password = group.get('password');
-    const confirm = group.get('confirmPassword');
-
-    return null;
+  }, {
+    validators: [RegisterValidators.confirmPassword]
   })
 
   registerStates = RegisterStatus;

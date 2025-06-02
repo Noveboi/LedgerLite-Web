@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FiscalPeriodService } from '../../services/fiscal-period.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { getDateString } from '../../../../core/services/dates/dates.utilities';
+import { AppFormComponent } from '../../../../core/types/component.types';
 
 @Component({
   selector: 'app-add-fiscal-period-form',
@@ -16,7 +17,7 @@ import { getDateString } from '../../../../core/services/dates/dates.utilities';
   templateUrl: './add-fiscal-period-form.component.html',
   styleUrl: './add-fiscal-period-form.component.css'
 })
-export class AddFiscalPeriodFormComponent {
+export class AddFiscalPeriodFormComponent implements AppFormComponent {
   private periodService = inject(FiscalPeriodService);
   private snackbar = inject(MatSnackBar);
   onValidSubmit = output();
@@ -27,7 +28,7 @@ export class AddFiscalPeriodFormComponent {
     name: new FormControl('', [Validators.required])
   });
 
-  onSubmit() {
+  submit() {
     if (this.periodForm.invalid) {
       return;
     }

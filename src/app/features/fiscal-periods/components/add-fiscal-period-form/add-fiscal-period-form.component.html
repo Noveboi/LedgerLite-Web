@@ -1,4 +1,4 @@
-<form name="create-fiscal-period" [formGroup]="periodForm" (ngSubmit)="onSubmit()">
+<form name="create-fiscal-period" [formGroup]="periodForm" (ngSubmit)="submit()">
     <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput type="text" formControlName="name">
@@ -9,10 +9,7 @@
             <input matStartDate placeholder="Start" formControlName="startDate">
             <input matEndDate placeholder="End" formControlName="endDate">
         </mat-date-range-input>
-        <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" />
         <mat-date-range-picker #picker />
     </mat-form-field>
-
-    <button mat-button type="submit" [disabled]="periodForm.invalid"> Create </button>
 </form>
