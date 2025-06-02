@@ -8,6 +8,7 @@ import { map } from 'rxjs';
 import { CreateAccountButtonComponent } from "../create-account-button/create-account-button.component";
 import { RouterLink } from '@angular/router';
 import { AccountMenuComponent } from "../account-menu/account-menu.component";
+import { PermissionsService } from '../../../../core/permissions/permissions.service';
 
 @Component({
   selector: 'app-account-tree',
@@ -17,11 +18,13 @@ import { AccountMenuComponent } from "../account-menu/account-menu.component";
 })
 export class AccountTreeComponent {
   private accountService = inject(ChartOfAccountsService);
+  private perms = inject(PermissionsService);
 
   childrenAccessor = (node: ChartAccountNode) => node.children ?? [];
   hasChild = (_: number, node: ChartAccountNode) => !!node.children && node.children.length > 0;
   trackByFn: TrackByFunction<ChartAccountNode> = (_: number, item: ChartAccountNode) => item.account.id;
   stopClickPropagation = (e: MouseEvent) => e.stopPropagation();
+  canModify = () => this.perms.isAllowedToModify();
    
   indentPixels = 15;
 

@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { PermissionsDocumentation } from './permissions.types';
 import { AuthService } from '../../features/auth/auth-service';
 import { User } from '../../features/users/users.types';
+import { LedgerSignalService } from '../services/ledger-signal.service';
 
 const route = '/permissions';
 
@@ -13,13 +14,13 @@ const route = '/permissions';
 export class PermissionsService {
   private api = inject(ApiService);
   private auth = inject(AuthService);
-  private _isAllowedToModify = signal(false);
+  private signals = inject(LedgerSignalService);
+
+  private _isAllowedToModify = this.signals.make(false, {
+    onAuthorized: () => this.determine()
+  });
 
   isAllowedToModify = this._isAllowedToModify.asReadonly();
-
-  constructor() {
-    this.determine();
-  }
 
   private determine(): void {
     const user = this.auth.user();

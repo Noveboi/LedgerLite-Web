@@ -28,4 +28,6 @@
     </mat-tree-node>
 </mat-tree>
 
-<app-create-account-button class="root-account-btn"></app-create-account-button>
+@if (canModify()) {
+    <app-create-account-button class="root-account-btn"></app-create-account-button>
+}

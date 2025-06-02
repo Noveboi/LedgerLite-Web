@@ -5,8 +5,9 @@ import { User } from '../users/users.types';
 import { Router } from '@angular/router';
 import { ApiService } from '../../core/services/api/api.service';
 import { SettingsService } from '../../core/services/storage/settings.service';
-import { EMPTY, Observable, tap } from 'rxjs';
+import { BehaviorSubject, distinct, distinctUntilChanged, distinctUntilKeyChanged, EMPTY, filter, Observable, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,10 @@ export class AuthService {
 
   accessToken = computed(() => this.authState().accessToken);
   isRefreshing = computed(() => this.authState().isRefreshing);
-  user = computed(() => this.authState().user);
+  user$ = new BehaviorSubject<User | null>(null);
+  user = toSignal(this.user$);
 
-  refresh(): Observable<AccessTokenResponse> {
+  refreshToken(): Observable<AccessTokenResponse> {
     this.authState.update(x => ({...x, isRefreshing: true}))
     const refreshToken = this.authState().refreshToken;
 
@@ -46,9 +48,7 @@ export class AuthService {
   }
 
   getUser(): Observable<User> {
-    return this.api.get<User>('/me').pipe(
-      tap(resp => this.authState.update(x => ({...x, user: resp})))
-    );
+    return this.api.get<User>('/me').pipe(tap(resp => this.user$.next(resp)));
   }
 
   tryGetTokenFromSettings(): string | null {
@@ -82,6 +82,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.user$.next(null);
     this.authState.set(initialState);
     this.settings.current.update(s => ({
         ...s,
@@ -92,14 +93,14 @@ export class AuthService {
     this.router.navigate([''])
   }
 
-    private getUserAndHome(): void {
-      if (this.authState().accessToken === null) {
-        throw new Error('Cannot get user without an access token.')
-      }
-      this.getUser().subscribe(() => {
-        this.router.navigate(['']);
-      });
+  private getUserAndHome(): void {
+    if (this.authState().accessToken === null) {
+      throw new Error('Cannot get user without an access token.')
     }
+    this.getUser().subscribe(() => {
+      this.router.navigate(['']);
+    });
+  }
 
   private setStateTokens(access: string | null, refresh: string | null, isRefreshing?: boolean): void {
     this.authState.update(x => ({
@@ -111,14 +112,12 @@ export class AuthService {
 }
 
 interface AuthState {
-  user: User | null,
   accessToken: string | null,
   refreshToken: string | null,
   isRefreshing: boolean
 }
 
 const initialState: AuthState = {
-  user: null,
   accessToken: null,
   refreshToken: null,
   isRefreshing: false

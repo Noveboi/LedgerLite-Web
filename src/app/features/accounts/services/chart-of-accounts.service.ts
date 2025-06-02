@@ -5,6 +5,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../core/services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FiscalPeriodService } from '../../fiscal-periods/services/fiscal-period.service';
+import { LedgerSignalService } from '../../../core/services/ledger-signal.service';
 
 const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
@@ -15,19 +16,16 @@ export class ChartOfAccountsService {
   private api = inject(ApiService);
   private snackbar = inject(MatSnackBar);
   private periodService = inject(FiscalPeriodService);
+  private signals = inject(LedgerSignalService);
 
-  private chartSignal = signal<ChartOfAccounts>(initialChart);
-  private selectedAccountSignal = signal<AccountWithLines | null>(null);
+  private chartSignal = this.signals.make<ChartOfAccounts>(initialChart, { 
+    onAuthorized: () => this.getChartOfAccounts(),
+  });
+  private selectedAccountSignal = this.signals.make<AccountWithLines | null>(null);
   
   selectedAccount = this.selectedAccountSignal.asReadonly();
   chart = this.chartSignal.asReadonly();
   chart$ = toObservable(this.chartSignal);
-
-  constructor() {
-    if (this.chartSignal() === initialChart) {
-      this.getChartOfAccounts();
-    }
-  }
 
   getAllAccounts(): SlimAccount[] {
     const accounts: SlimAccount[] = [];

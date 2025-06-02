@@ -1,14 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef } from 'ag-grid-community'; 
 import { AccountBalance } from '../../../reporting.types';
 import { TrialBalanceService } from '../../trial-balance.service';
 import { FiscalPeriodService } from '../../../../fiscal-periods/services/fiscal-period.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TrialBalance } from '../../trial-balance.types';
+import { distinct, distinctUntilChanged, filter } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-trial-balance-table',
-  imports: [AgGridAngular],
+  imports: [AgGridAngular, AsyncPipe],
   templateUrl: './trial-balance-table.component.html',
   styleUrl: './trial-balance-table.component.css'
 })
@@ -16,17 +19,15 @@ export class TrialBalanceTableComponent {
   private trialBalance = inject(TrialBalanceService);
   private periodService = inject(FiscalPeriodService);
 
-  current = this.trialBalance.currentTrialBalance;
-  selectedPeriod = this.periodService.selectedPeriod;
+  current = signal<TrialBalance | null>(null);
+  selectedPeriod$ = this.periodService.selectedPeriod$;
 
   constructor() {
-    if (!this.current) {
-      this.trialBalance.get();
-    }
-
-    this.periodService.selectedPeriod$.pipe(takeUntilDestroyed()).subscribe(period => {
-      this.trialBalance.get();
-    })
+    this.selectedPeriod$.pipe(
+      takeUntilDestroyed(),
+      filter(x => x !== null),
+      distinct(x => x.id))
+    .subscribe(period => this.trialBalance.get(period).subscribe(tb => this.current.set(tb)))
   }
 
   colDefs: ColDef<AccountBalance>[] = [

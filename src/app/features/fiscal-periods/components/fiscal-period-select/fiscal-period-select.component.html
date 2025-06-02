@@ -1,7 +1,7 @@
 @if (fiscalPeriods(); as periods) {
     @if (periods.length > 0) {
         <mat-form-field>
-            <mat-select (selectionChange)="onPeriodSelected($event)" [value]="selectedPeriod()">
+            <mat-select (selectionChange)="onPeriodSelected($event)" [value]="selectedPeriod()" [compareWith]="compareFn">
                 @for (period of periods; track period.id) {
                     <mat-option [value]="period"> {{ period.name }}</mat-option>
                 }

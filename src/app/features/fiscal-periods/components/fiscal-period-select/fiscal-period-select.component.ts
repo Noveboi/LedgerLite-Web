@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { FiscalPeriod } from '../../fiscal-periods.types';
 import { FiscalPeriodService } from '../../services/fiscal-period.service';
@@ -11,10 +11,11 @@ import { AddFiscalPeriodButtonComponent } from "../add-fiscal-period-button/add-
   styleUrl: './fiscal-period-select.component.css'
 })
 export class FiscalPeriodSelectComponent {
-  private periodService = inject(FiscalPeriodService)
+  private periodService = inject(FiscalPeriodService);
 
   selectedPeriod = this.periodService.selectedPeriod;
   fiscalPeriods = this.periodService.fiscalPeriods;
+  compareFn = (x: FiscalPeriod, y: FiscalPeriod) => x.id === y.id;
 
   onPeriodSelected(e: MatSelectChange<FiscalPeriod>) {
     if (!e.value) {

@@ -52,7 +52,7 @@ const handleUnauthorized = (req: HttpRequest<unknown>, next: HttpHandlerFn, auth
     )
   }
 
-  return auth.refresh().pipe(
+  return auth.refreshToken().pipe(
     switchMap(() => addAuthorizationHeader())
   );
 }
