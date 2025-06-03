@@ -6,11 +6,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginRequest } from '../../login.types';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { ButtonComponent } from "../../../../../components/button/button.component";
 
 @Component({
   selector: 'app-login-form',
-  imports: [MatFormField, MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatIconModule, ButtonComponent],
+  imports: [MatFormField, MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })

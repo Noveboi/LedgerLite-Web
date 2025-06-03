@@ -1,6 +1,6 @@
 import { ChartAccountNode } from '../../accounts.types';
-import {Component, inject, TrackByFunction} from '@angular/core';
-import {MatTreeModule, MatTreeNodePadding} from '@angular/material/tree';
+import {Component, inject, TrackByFunction, viewChild} from '@angular/core';
+import {MatTree, MatTreeModule, MatTreeNodePadding} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ChartOfAccountsService } from '../../services/chart-of-accounts.service';
@@ -19,10 +19,10 @@ import { PermissionsService } from '../../../../core/permissions/permissions.ser
 export class AccountTreeComponent {
   private accountService = inject(ChartOfAccountsService);
   private perms = inject(PermissionsService);
+  private tree = viewChild<MatTree<ChartAccountNode, string>>('tree');
 
   childrenAccessor = (node: ChartAccountNode) => node.children ?? [];
   hasChild = (_: number, node: ChartAccountNode) => !!node.children && node.children.length > 0;
-  trackByFn: TrackByFunction<ChartAccountNode> = (_: number, item: ChartAccountNode) => item.account.id;
   stopClickPropagation = (e: MouseEvent) => e.stopPropagation();
   canModify = () => this.perms.isAllowedToModify();
    

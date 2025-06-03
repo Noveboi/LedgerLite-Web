@@ -14,3 +14,18 @@ ag-grid-angular {
     cursor: pointer;
     color: red;
 }
+
+.button-toolbar{
+    display: flex;
+    gap: 1em;
+}
+
+#apply-button {
+    background-color: var(--ll-success);
+    color: var(--ll-on-success);
+}
+
+#discard-button {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+}

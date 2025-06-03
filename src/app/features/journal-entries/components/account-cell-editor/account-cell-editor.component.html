@@ -1,0 +1,9 @@
+<div #container class="account-cell-editor" tabindex="0" (keydown)="onKeyDown($event)">
+    <mat-form-field>
+        <mat-select [(value)]="selected" [compareWith]="compareFn">
+            @for (account of accounts$ | async; track account.id) {
+                <mat-option [value]="account">{{ account.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</div>

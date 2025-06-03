@@ -1,10 +1,10 @@
 export interface UpdateJournalEntryRequest {
-    entryId: string,
-    lineId: string,
-    entryDescription: string,
-    transferAccountId: string,
-    credit: number,
-    debit: number
+    lineId: string
+    description: string | null
+    transferAccountId: string | null
+    occursAt: string | null
+    credit: number | null
+    debit: number | null
 }
 
 export interface CreateJournalEntryRequest {

@@ -73,7 +73,9 @@ export class AuthService {
 
         this.getUserAndHome();
       },
-      error: () => this.snackbar.open('Wrong username or password.')
+      error: () => this.snackbar.open('Wrong username or password.', '', {
+        duration: 1250
+      })
     })
   }
 

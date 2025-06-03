@@ -1,11 +1,11 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Account, AccountWithLines, ChartAccountNode, ChartOfAccounts, SlimAccount } from '../accounts.types';
 import { CreateAccountRequest } from '../accounts.requests';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../core/services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FiscalPeriodService } from '../../fiscal-periods/services/fiscal-period.service';
 import { LedgerSignalService } from '../../../core/services/ledger-signal.service';
+import { map } from 'rxjs';
 
 const initialChart: ChartOfAccounts = {id: '', accounts: []} 
 
@@ -18,18 +18,22 @@ export class ChartOfAccountsService {
   private periodService = inject(FiscalPeriodService);
   private signals = inject(LedgerSignalService);
 
-  private chartSignal = this.signals.make<ChartOfAccounts>(initialChart, { 
-    onAuthorized: () => this.getChartOfAccounts(),
-  });
   private selectedAccountSignal = this.signals.make<AccountWithLines | null>(null);
+  private _chart$ = this.signals.makeObservable<ChartOfAccounts>(initialChart, {
+    onAuthorized: () => this.getChartOfAccounts()
+  })
+
+  public chart$ = this._chart$.asObservable();
   
   selectedAccount = this.selectedAccountSignal.asReadonly();
-  chart = this.chartSignal.asReadonly();
-  chart$ = toObservable(this.chartSignal);
 
-  getAllAccounts(): SlimAccount[] {
+  allAccounts$ = this._chart$.pipe(
+    map(chart => this.getAllAccounts(chart))
+  );
+
+  private getAllAccounts(chart: ChartOfAccounts): SlimAccount[] {
     const accounts: SlimAccount[] = [];
-    this.chart().accounts.forEach(node => accounts.push(...this.getAllAccountsRecursive(node)));
+    chart.accounts.forEach(node => accounts.push(...this.getAllAccountsRecursive(node)));
     return accounts;
   }
 
@@ -40,7 +44,7 @@ export class ChartOfAccountsService {
   }
   
   getChartOfAccounts(): void {
-    this.api.get<ChartOfAccounts>(`/accounts`).subscribe(resp => this.chartSignal.set(resp));
+    this.api.get<ChartOfAccounts>(`/accounts`).subscribe(resp => this._chart$.next(resp));
   }
 
   createAccount(request: CreateAccountRequest): void {
@@ -60,7 +64,7 @@ export class ChartOfAccountsService {
   refreshSelectedAccount() { 
     const selected = this.selectedAccount();
     if (selected) {
-      this.getAccount(selected.id);
+      this.getAccount(selected.account.id);
     }
   }
 

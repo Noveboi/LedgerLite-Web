@@ -1,8 +1,9 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from "@angular/common/http";
-import { catchError, defer, filter, Observable, switchMap, take, throwError, timeout, timer } from "rxjs";
+import { catchError, defer, EMPTY, filter, map, Observable, switchMap, take, throwError, timeout, timer } from "rxjs";
 import { AuthService } from "../../features/auth/auth-service";
 import { inject } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { IncomeStatementPageComponent } from "../../features/reporting/pages/income-statement-page/income-statement-page.component";
 
 export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const auth = inject(AuthService);
@@ -10,15 +11,36 @@ export const authInteceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): 
 
   let token = auth.accessToken();
 
+  const pipedNext = (req: HttpRequest<unknown>) => { 
+    return next(req).pipe(
+      catchError(err => {
+        if (!(err instanceof HttpErrorResponse)) 
+          return throwError(() => err);
+
+        if (err.status === 0) {
+          snackbar.open('Servers are offline.')
+          return EMPTY;
+        }
+
+        return throwError(() => err);
+      })
+    )
+  }
+
   if (req.url.includes('/login')) {
-    return next(req);
+    return pipedNext(req).pipe(
+      catchError(err => {
+        console.log(err);
+        return throwError(() => err);
+      })
+    );
   }
 
   if (token && !req.url.includes('/refresh')) {
     req = authenticateRequest(req, token);
   }
 
-  return next(req).pipe(
+  return pipedNext(req).pipe(
     catchError((error: unknown) => {
       if (!(error instanceof HttpErrorResponse)){
         return throwError(() => error);

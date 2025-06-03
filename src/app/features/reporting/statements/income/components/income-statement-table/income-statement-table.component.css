@@ -1,0 +1,9 @@
+::ng-deep .metric-row {
+    font-weight: 600;
+}
+
+ag-grid-angular {
+    width: 100%;
+    min-width: 550px;
+    height: 600px;
+}

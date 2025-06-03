@@ -1,9 +1,9 @@
 @if (account(); as account) {
     <div id="page-header">
-        <app-account-heading [account]="account"/>
+        <app-account-heading [account]="account.account"/>
     </div>
     
-    @if (!account.isControl) {
+    @if (!account.account.isControl) {
         <app-journal-entry-table [entries]="account.lines"/>
     }
 }

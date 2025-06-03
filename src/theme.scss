@@ -30,6 +30,9 @@ body {
     --ag-header-text-color: #{$fg-smooth};
     --ag-foreground-color: #{$fg};
     --ag-browser-color-scheme: light;
+
+    --ll-success: light-dark(#079e3c, #14532d);
+    --ll-on-success: light-dark(#fff, #bbf7d0);
 }
 
 form {

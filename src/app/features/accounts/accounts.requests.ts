@@ -5,5 +5,6 @@ export interface CreateAccountRequest {
     currency: string,
     isPlaceholder: boolean,
     description: string | null 
-    parentId: string | null
+    parentId: string | null,
+    expenseType: string | null
 }

@@ -4,13 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RegisterRequest } from '../../register.types';
-import { RouterLink } from '@angular/router';
-import { ButtonComponent } from "../../../../../components/button/button.component";
 import { RegisterValidators } from '../../register.validators';
 
 @Component({
   selector: 'app-register-form',
-  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule, ButtonComponent],
+  imports: [ReactiveFormsModule, MatFormField, MatInputModule, MatButtonModule],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })

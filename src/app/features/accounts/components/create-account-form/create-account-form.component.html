@@ -29,5 +29,18 @@
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
-    <mat-checkbox formControlName="isPlaceholder">Placeholder</mat-checkbox>
+
+    @if (parentAccount()?.type === 'Expense') {
+        <label id="expenseTypesGroup">Expense Type</label>
+        <mat-radio-group 
+            aria-labelledby="expenseTypesGroup"
+            formControlName="expenseType"
+        >
+            @for (type of expenseTypes; track type) {
+                <mat-radio-button [value]="type">{{ type }}</mat-radio-button>
+            }
+        </mat-radio-group>
+    }
+
+    <mat-checkbox class="margin" formControlName="isPlaceholder">Placeholder</mat-checkbox>
 </form>

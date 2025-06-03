@@ -10,13 +10,15 @@ export interface ChartAccountNode {
     children: ChartAccountNode[]
 }
 
-export interface AccountWithLines extends Account {
+export interface AccountWithLines {
+    account: Account
     lines: readonly JournalEntryLine[]
 }
 
 export interface Account extends SlimAccount {
     number: string,
-    description: string
+    description: string,
+    expenseType: string | null
 }
 
 export interface SlimAccount {
@@ -26,5 +28,3 @@ export interface SlimAccount {
     type: string,
     isControl: boolean
 }
-
-export const accountTypes = ['Asset', 'Liability', 'Expense', 'Revenue', 'Equity']

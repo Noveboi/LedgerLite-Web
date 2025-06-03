@@ -32,7 +32,7 @@
                 <mat-label>Transfer Account</mat-label>
                 <input matInput type="text" formControlName="transferAccount" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                    @for (account of accounts; track account.id) {
+                    @for (account of accounts$ | async; track account.id) {
                         <mat-option [value]="account">{{ account.name }}</mat-option>
                     }
                 </mat-autocomplete>

@@ -3,5 +3,15 @@
         <mat-icon fontIcon="account_balance" aria-hidden="true"/>
         {{ account.name }}
     </h1>
-    <p class="account-description">{{ account.description }}</p>
+    <p class="account-description">
+        <span class="description-account-type">
+            @if (account.expenseType; as expenseType) {
+                {{ expenseType }}
+            }
+            {{ account.type }}
+        </span>
+        @if (account.description; as description) {
+            | {{ description }}
+        }
+    </p>
 }

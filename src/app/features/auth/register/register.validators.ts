@@ -3,7 +3,6 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors } from "@angu
 export class RegisterValidators {
     static confirmPassword(control: AbstractControl): ValidationErrors | null {
         if (!(control instanceof FormGroup)) {
-            console.log('not group', control);
             return null;
         }
 
@@ -11,7 +10,6 @@ export class RegisterValidators {
         const confirmPasswordControl = control.get('confirmPassword');
 
         if (!passwordControl || !confirmPasswordControl) {
-            console.log('no password or forgot password', control);
             return null;
         }
 

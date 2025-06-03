@@ -1,14 +1,31 @@
 @if (selectedPeriod()) {
 @if (rows(); as rows) {
+    @let modify = canModify();
+
     <div id="entry-table-container">
-        @if (canModify()) {
-            <button mat-stroked-button (click)="openRecordEntryDialog()">
-                <mat-icon>add</mat-icon>
-                Add Entry
-            </button>
+        @if (modify) {
+            <div class="button-toolbar">
+                <button mat-stroked-button (click)="openRecordEntryDialog()">
+                    <mat-icon>add</mat-icon>
+                    Add Entry
+                </button>
+                @if (isEditing()) {
+                    <button mat-flat-button id="apply-button" (click)="applyChanges()">
+                        <mat-icon>check</mat-icon>
+                        Apply Changes
+                    </button>
+                    <button mat-flat-button id="discard-button" (click)="discardChanges()">
+                        <mat-icon>close</mat-icon>
+                        Discard Changes
+                    </button>
+                }
+            </div>
         }
         <ag-grid-angular
-            editType="fullRow"
+            #grid
+            (rowEditingStarted)="onStartEditing()"
+            (rowEditingStopped)="onStopEditing()"
+            [editType]="modify ? 'fullRow' : undefined"
             [rowData]="rows"
             [columnDefs]="columnDefinitions"
             [defaultColDef]="defaultColumnDefinitions"

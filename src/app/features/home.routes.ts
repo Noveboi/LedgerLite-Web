@@ -1,6 +1,6 @@
 import { Route } from "@angular/router";
-import { HomePageComponent } from "./home/home-page/home-page.component";
 import { isInOrganizationGuard } from "../core/guards/organization.guard";
+import { HomePageComponent } from "./home/home-page.component";
 
 export const HOME_ROUTES: Route[] = [
     { 
@@ -11,5 +11,9 @@ export const HOME_ROUTES: Route[] = [
     {
         path: 'accounts',
         loadChildren: () => import('./accounts/accounts.routes').then(x => x.ACCOUNT_ROUTES)
+    },
+    {
+        path: 'reports',
+        loadChildren: () => import('./reporting/reporting.routes').then(x => x.REPORTING_ROUTES)
     }
 ]

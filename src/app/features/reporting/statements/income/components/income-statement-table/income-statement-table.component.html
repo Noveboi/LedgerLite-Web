@@ -1,0 +1,8 @@
+@if (period$ | async; as period) {
+    <ag-grid-angular
+        [rowData]="current$ | async"
+        [columnDefs]="colDefs"
+        [rowClassRules]="rowClassRules"/>
+} @else {
+    <h1>Start by selecting or creating a fiscal period!</h1>
+}

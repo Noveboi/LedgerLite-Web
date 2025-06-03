@@ -1,0 +1,19 @@
+.reporting-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.reporting-container {
+    display: flex;
+}
+
+#title {
+    margin-bottom: 0;
+}
+
+router-outlet {
+    width: 100%;
+}
