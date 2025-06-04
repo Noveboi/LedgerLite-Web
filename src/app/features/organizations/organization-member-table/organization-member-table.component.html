@@ -1,0 +1,5 @@
+@if (members$ | async; as members) {
+    <ag-grid-angular
+        [rowData]="members"
+        [columnDefs]="colDefs"/>
+}

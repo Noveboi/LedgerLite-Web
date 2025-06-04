@@ -7,6 +7,7 @@ export interface Role {
 
 export interface User {
     id: string,
+    memberId: string | null,
     organization: Organization | null,
     organizationRoles: readonly Role[],
     email: string,
