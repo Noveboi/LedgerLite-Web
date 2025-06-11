@@ -24,7 +24,7 @@ export class OrganizationMemberActionsComponent implements ICellRendererAngularC
       throw new Error('Invalid');
     }
 
-    this.org.removeMember(user.organization.id, this.memberId).subscribe();
+    this.org.removeMember(user.organization.id, this.memberId);
   }
   
   agInit(params: any): void {

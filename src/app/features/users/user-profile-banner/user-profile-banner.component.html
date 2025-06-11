@@ -5,7 +5,7 @@
             {{user?.username ?? 'Unknown'}}
         </div>
         @if (user.organization) {
-            <a class="user-org" [routerLink]="['organization']">
+            <a class="user-org" [routerLink]="organizationLink()">
                 <mat-icon>groups</mat-icon>
                 {{user?.organization?.name ?? 'None'}}
             </a>

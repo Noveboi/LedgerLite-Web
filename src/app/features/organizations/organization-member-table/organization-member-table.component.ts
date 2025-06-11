@@ -3,7 +3,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { OrganizationService } from '../services/organization.service';
 import { AuthService } from '../../auth/auth-service';
-import { filter, map, Observable, switchMap } from 'rxjs';
+import { filter, map, merge, Observable, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { OrganizationMemberActionsComponent } from '../organization-member-actions/organization-member-actions.component';
 
@@ -27,9 +27,13 @@ export class OrganizationMemberTableComponent {
   protected members$: Observable<MemberRow[]>
 
   constructor() {
-    this.members$ = this.auth.user$.pipe(
-      filter(user => user !== null),
-      switchMap(user => this.org.getMembers(user.organization?.id ?? '').pipe(
+    this.members$ = merge(this.auth.user$, this.org.remove$).pipe(
+      filter(resp => resp !== null),
+      map(resp => 'organizationId' in resp 
+        ? resp.organizationId
+        : resp.organization!.id
+      ),
+      switchMap(orgId => this.org.getMembers(orgId ?? '').pipe(
         map(members => members.map<MemberRow>(member => ({
           memberId: member.memberId!,
           fullName: member.fullName ?? '',
@@ -37,11 +41,10 @@ export class OrganizationMemberTableComponent {
           username: member.username
         })))
       ))
-    )
+    );
   }
-
   
-  colDefs: ColDef<MemberRow>[] = [
+  protected colDefs: ColDef<MemberRow>[] = [
     {field: 'username'},
     {field: 'fullName'},
     {headerName: 'Roles', valueGetter: params => params.data?.roles.join(', ')},
@@ -50,7 +53,7 @@ export class OrganizationMemberTableComponent {
       cellRendererSelector: params => {
         return {
           component: OrganizationMemberActionsComponent,
-          params: { memberId: params.data?.memberId}
+          params: { memberId: params.data?.memberId }
         }
       }
     }
